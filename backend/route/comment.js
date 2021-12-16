@@ -4,6 +4,6 @@ const router = require('./message');
 
 
 //routes pour les commentaires des utilisateurs //
-router.post('/post/:id/comment');
+router.post('/:id/comment');
 
 module.exports = router
