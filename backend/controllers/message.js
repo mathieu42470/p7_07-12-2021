@@ -1,5 +1,6 @@
+const { json } = require('express');
 const Message = require('../models/message');
-
+const fs = require('fs');
 
 // création du message //
 exports.createMessage = (req, res, next) =>{
@@ -31,3 +32,30 @@ exports.getOneMessage = (req, res, next) =>{
                .then(Sauces => res.status(200).json(Message))
                .catch(error => res.status(400).json({ error }));
 };
+
+// modification d'un message //
+exports.modifyMessage = (req, res, next) =>{
+  const messageObjet =req.file?{
+    ...json.parse(req.body.Message),
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  } : {...req.body };
+  Message.updateOne({_id: req.body.id}, { ...req.body, _id: req.params.id})
+  .then(() => res.status(200).json({message:'message modifié'}))
+  .catch(error => res.status(400).json({ error }));
+}
+
+// suppression du message publié //
+exports.deleteMessage = (req, res, next) => {
+  Message.findOne({_id: req.params.id})
+  .then(Message =>{
+    const filename = Message.imageUrl.split('/images/')[1];
+    fs.unlink(`images/${filename}`, () =>{
+      Message.deleteOne({_id: req.params.id})
+      .then(() => res.status(200).json({message:'message supprimé'}))
+           .catch(error => res.status(400).json({ error }));
+    })
+  })
+  .catch(error => res.status(500).json({ error }));
+};
+
+// like et dislike du message //
