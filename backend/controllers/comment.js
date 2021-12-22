@@ -11,7 +11,6 @@ exports.createComment = (req, res, next) =>{
                const comment = new Comment({
                               ...commentObjet,
                               likes: 0,
-                              dislikes: 0,
                               imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
                });
                Comment.save()
@@ -58,4 +57,30 @@ exports.modifyComment = (req, res, next)=>{
                   })
                 })
                 .catch(error => res.status(500).json({ error }));
+};
+
+// like du commentaire //
+exports.likeComment = (req, res, next) =>{
+  const likes = req.body.like;
+  const userId = req.body.userId;
+  const commentId = req.params.id;
+  Comment.findOne({_id: commentId})
+  .then(Comment =>{
+    switch(likes){
+      // commentaire pas like //
+      case 0:
+        if(Comment.usersLiked.indexOf(userId)!= -1){
+          Comment.likes -= 1
+        }
+        result = "0"
+        break;
+        // commentaire like //
+        case 1:
+          Comment.likes += 1;
+          result = "1";
+    }
+    Comment.save();
+  })
+  .then(() =>{
+    res.status(200).json({message:result})});
 };

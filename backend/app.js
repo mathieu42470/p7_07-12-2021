@@ -7,10 +7,10 @@ const cors = require('cors');
 require('dotenv').config();
 
 
-// const messageRoutes = require('./route/message');
-// const commentRoutes = require('./route/comment');
-// const userRoutes = require('./route/user');
-// const { db } = require('./models/user');
+const messageRoutes = require('./route/message');
+const commentRoutes = require('./route/comment');
+const userRoutes = require('./route/user');
+const { db } = require('./models/user');
 
 
 
@@ -38,8 +38,8 @@ const corsOption ={
 };
 app.use(cors(corsOption));
 
-// app.use('/api/post', messageRoutes);
-// app.use('api/post', commentRoutes);
-// app.use('api/auth', userRoutes);
+app.use('/api/post', messageRoutes);
+app.use('api/post', commentRoutes);
+app.use('api/auth', userRoutes);
 
 module.exports = app;

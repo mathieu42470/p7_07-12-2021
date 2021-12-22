@@ -9,7 +9,6 @@ exports.createMessage = (req, res, next) =>{
                const messages = new message({
                                ...messageObjet,
                               likes:0,
-                              dislikes:0,
                               imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
                });
                messages.save()
@@ -58,4 +57,28 @@ exports.deleteMessage = (req, res, next) => {
   .catch(error => res.status(500).json({ error }));
 };
 
-// like et dislike du message //
+// like du message //
+exports.likeMessage = (req, res, next) =>{
+  const likes = req.body.like;
+  const userId = req.body.userId;
+  const messageId = req.params.id;
+  Message.findOne({_id: messageId})
+  .then(Message =>{
+    switch(likes){
+      // message non like
+      case 0:
+        if(Message.usersLiked.indexOf(userId)!= -1){
+          Message.likes -= 1
+        }
+        result = "0"
+        break;
+        // message like //
+        case 1:
+          Message.likes += 1;
+          result = "1";
+    }
+    Message.save();
+  })
+  .then(() =>{
+    res.status(200).json({message:result})});
+};

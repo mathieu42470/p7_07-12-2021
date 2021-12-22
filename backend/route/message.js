@@ -12,6 +12,6 @@ router.get('/', Auth, multer, messageCtrl.getAllMessage);
 router.get('/:id', Auth, multer, messageCtrl.getOneMessage);
 router.put('/:id', Auth, multer, messageCtrl.modifyMessage);
 router.delete('/:id', Auth, multer, messageCtrl.deleteMessage);
-router.post('/:id/like', Auth, messageCtrl);
+router.post('/:id/like', Auth, messageCtrl.likeMessage);
 
 module.exports = router;
