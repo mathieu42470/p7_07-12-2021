@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-// schéma d'un message envoyé par un utilisateur //
+// schéma d'un post envoyé par un utilisateur //
 
-const messageSchema = mongoose.Schema({
+const postSchema = mongoose.Schema({
                userId: {type: String, require: true},
                messageId: {type: String, require: true},
                text: {type: String, require: true},
@@ -11,4 +11,4 @@ const messageSchema = mongoose.Schema({
                dislikes: {type:Number, require: true},
 });
 
-module.exports = mongoose.model('message', messageSchema);
+module.exports = mongoose.model('post', postSchema);

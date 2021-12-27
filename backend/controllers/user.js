@@ -1,23 +1,35 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const user = require('../models/user');
 
-const User = require('../models/user');
+const db = require('../MysqlParam')
+
+
+
+
+
+
 
 // inscription des utilisateurs dans la base de donnée //
 
 exports.signup =(req, res, next) => {
                bcrypt.hash(req.body.password, 10)
                .then(hash =>{
-                              const user = new user({
-                                             firstName: req.body.firstName,
-                                             lastName: req.body.lastName,
-                                             email: req.body.email,
-                                             password: hash
-                              });
-                              user.save()
-                              .then(()=> res.status(201).json({message: "utilisateur crée"}))
-                              .catch(error => res.status(400).json({error}));
+               
+                              // const user = new user({
+                              //                firstName: req.body.firstName,
+                              //                lastName: req.body.lastName,
+                              //                email: req.body.email,
+                              //                password: hash
+                              // });
+                              db.query("Select * From user",(error,resultat) =>{
+                                             if(error){
+                                               return res.status(400).json('error')
+                                             }
+                                             return res.status(200).json({message : resultat})
+                                           })                             
+                             
                })
                .catch(error => res.status(500).json({error}));
 };
@@ -35,6 +47,12 @@ exports.login = (req, res, next) =>{
                                              if(!valid){
                                                             return res.status(401).json({error: 'mot de passe incorrect !'});
                                              }
+                                             db.query("Select * From user",(error,resultat) =>{
+                                              if(error){
+                                                return res.status(400).json('error')
+                                              }
+                                              return res.status(200).json({message : resultat})
+                                            })    
                                              res.status(200).json({
                                                             user: user._id,
                                                             token: jwt.sign(

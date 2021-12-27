@@ -6,6 +6,6 @@ const userCtrl = require('../controllers/user');
 
 // routes pour l'inscription et la connexion //
 router.use('/signup', userCtrl.signup);
-router.post('login', userCtrl.login);
+router.post('/login', userCtrl.login);
 
 module.exports = router;

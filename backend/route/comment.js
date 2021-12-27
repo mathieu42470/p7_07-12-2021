@@ -1,5 +1,5 @@
 const express = require('express');
-const router = require('./message');
+const router = require('./post');
 
 const CommentCtrl = require('../controllers/comment');
 const Auth = require('../middleware/auth');

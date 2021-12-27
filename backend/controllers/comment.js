@@ -15,23 +15,35 @@ exports.createComment = (req, res, next) =>{
                });
                Comment.save()
                .then(() => {               
-                              res.status(200).json({message:'commentaire ajouté !'});
-                             })
-                          .catch(error => res.status(400).json({ error }));
+                db.query("Select * From commentaire",(error,resultat) =>{
+                  if(error){
+                    return res.status(400).json('error')
+                  }
+                  return res.status(200).json({message : resultat})
+                }) 
+          })
 };
 
 // récupération de tous les commentaires //
 exports.getAllComment = (req, res, next)=>{
                Comment.find()
-               .then(Comment => res.status(200).json(Comment))
-               .catch(error => res.status(400).json({ error }));
+               db.query("Select * From commentaire",(error,resultat) =>{
+                if(error){
+                  return res.status(400).json('error')
+                }
+                return res.status(200).json({message : resultat})
+              }) 
 };
 
 // récupération d'un commentaire en particulier //
 exports.getOneComment = (req, res, next) =>{
                Comment.findOne({_id: req.params.id})
-               .then(Comment => res.status(200).json(Comment))
-               .catch(error => res.status(400).json({ error }));
+               db.query("Select * From commentaire",(error,resultat) =>{
+                if(error){
+                  return res.status(400).json('error')
+                }
+                return res.status(200).json({message : resultat})
+              }) 
 };
 
 // modifier un commentaire //
@@ -41,8 +53,12 @@ exports.modifyComment = (req, res, next)=>{
                      imageUrl:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`    
       } : { ...req.body };
       Comment.updateOne({_id: req.params.id}, { ...req.body, _id: req.params.id})
-      .then(() => res.status(200).json({message:'commentaire modifié'}))
-      .catch(error => res.status(400).json({ error }));
+      db.query("Select * From commentaire",(error,resultat) =>{
+        if(error){
+          return res.status(400).json('error')
+        }
+        return res.status(200).json({message : resultat})
+      }) 
 };
 
  // suppression d'un commentaire //
@@ -52,8 +68,12 @@ exports.modifyComment = (req, res, next)=>{
                   const filename = Comment.imageUrl.split('/images/')[1];
                   fs.unlink(`images/${filename}`, () => {
                    Comment.deleteOne({ _id: req.params.id })
-                      .then(() => res.status(200).json({message:'commentaire supprimé'}))
-                      .catch(error => res.status(400).json({ error }));
+                   db.query("Select * From commentaire",(error,resultat) =>{
+                    if(error){
+                      return res.status(400).json('error')
+                    }
+                    return res.status(200).json({message : resultat})
+                  }) 
                   })
                 })
                 .catch(error => res.status(500).json({ error }));
@@ -81,6 +101,10 @@ exports.likeComment = (req, res, next) =>{
     }
     Comment.save();
   })
-  .then(() =>{
-    res.status(200).json({message:result})});
+  db.query("Select * From commentaire",(error,resultat) =>{
+    if(error){
+      return res.status(400).json('error')
+    }
+    return res.status(200).json({message : resultat})
+  }) 
 };
