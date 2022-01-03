@@ -3,63 +3,62 @@ const Posts = require('../models/post');
 const fs = require('fs');
 const db = require('../MysqlParam');
 const  post  = require('../route/post');
+const con = require('../MysqlParam');
+
+const text = req.body.text;
+const url_image = req.body.url_image;
+const date = req.body.date;
+const id_post = req.body._id;
 
 // création du message //
 exports.createPost = (req, res, next) =>{
-               const postObjet = JSON.parse(req.body.message);
-               delete postObjet._id;
-               const post = new post({
-                               ...postObjet,
-                              likes: 0,
-                              imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-               });
-               post.save()
-               .then(() => {
-                 db.query("Select * From post",(error,resultat) =>{
-                                if(error){
-                                  return res.status(400).json('error')
-                                }
-                                return res.status(200).json({message : resultat})
-                              }) 
-                            })
-                .catch(error => res.status(400).json({ error }));
+ db.query (INSERT * INTO `post` ( `text`, `url_image`,`date`)
+  ({text: text }, {url_image: url_image }, {date: date})
+ )
+     post.save()
+         .then((post) => {
+            if(error){
+                return res.status(400).json('error')
+              }
+                 return res.status(200).JSON({message : resultat})
+                }) 
+         .catch(error => res.status(400).json({ error }))             
 };
 
 // récupération des messages pour la page d'accueil //
 exports.getAllPost = (req, res, next) =>{
-  post.find()
-  db.query("Select * From post",(error,resultat) =>{
+  db.query(SELECT 
+    `post`.text,
+    `post`.url_image,
+    `post`.date,
+FROM `groupomania`.post)
     if(error){
       return res.status(400).json('error')
     }
-    return res.status(200).json({message : resultat})
-  })    
+    return res.status(200).json({message : resultat})  
 };
 
 // récupération d'un message en particulier //
 exports.getOnepost = (req, res, next) =>{
-               Message.findOne({_id : req.params.id})
-               db.query("Select * From post",(error,resultat) =>{
+               db.query(SELECT `post`.id_post,
+               `post`.text,
+               `post`.url_image,
+               `post`.date,
+               FROM `groupomania`.post)
                 if(error){
                   return res.status(400).json('error')
                 }
-                return res.status(200).json({message : resultat})
-              })    
+                return res.status(200).json({message : resultat})   
 };
 
 // modification d'un message //
 exports.modifyPost = (req, res, next) =>{
-  const postObjet =req.file?{
-    ...json.parse(req.body.Post),
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-  } : {...req.body };
-  post.updateOne({_id: req.body.id}, { ...req.body, _id: req.params.id})
-  db.query("Select * From post",(error,resultat) =>{
+  db.query(UPDATE `groupomania`.post ({text: text}, {url_image: url_image })
+  );
     if(error){
       return res.status(400).json('error')
     }
     return res.status(200).json({message : resultat})
-  })    
 }
 
 // suppression du message publié //
@@ -103,11 +102,12 @@ exports.likePost = (req, res, next) =>{
     Post.save();
   })
   .then(() =>{
-    db.query("Select * From post",(error,resultat) =>{
+    db.query(INSERT * INTO `groupomania`.post,
+    ({likes})
+    )
       if(error){
         return res.status(400).json('error')
       }
-      return res.status(200).json({message : resultat})
-    })    
+      return res.status(200).json({message : resultat}) 
 })
 }

@@ -9,9 +9,9 @@ exports.createComment = (req, res, next) =>{
                const commentObjet = json.parse(req.body.comment);
                delete commentObjet._id;
                const comment = new Comment({
-                              ...commentObjet,
-                              likes: 0,
-                              imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+                              // ...commentObjet,
+                              // likes: 0,
+                              // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
                });
                Comment.save()
                .then(() => {               
@@ -26,7 +26,7 @@ exports.createComment = (req, res, next) =>{
 
 // récupération de tous les commentaires //
 exports.getAllComment = (req, res, next)=>{
-               Comment.find()
+             
                db.query("Select * From commentaire",(error,resultat) =>{
                 if(error){
                   return res.status(400).json('error')
@@ -38,7 +38,7 @@ exports.getAllComment = (req, res, next)=>{
 // récupération d'un commentaire en particulier //
 exports.getOneComment = (req, res, next) =>{
                Comment.findOne({_id: req.params.id})
-               db.query("Select * From commentaire",(error,resultat) =>{
+               db.query("Select * From commentaire WHERE comment_id = ",(error,resultat) =>{
                 if(error){
                   return res.status(400).json('error')
                 }

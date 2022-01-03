@@ -5,31 +5,19 @@ const user = require('../models/user');
 
 const db = require('../MysqlParam')
 
-
-
-
-
-
+ const email = req.body.email; 
+                 const firstName = req.body.firstname; 
+                 const lastName = req.body.lastname; 
+                 const password = req.body.password; 
 
 // inscription des utilisateurs dans la base de donnée //
 
 exports.signup =(req, res, next) => {
                bcrypt.hash(req.body.password, 10)
-               .then(hash =>{
-               
-                              // const user = new user({
-                              //                firstName: req.body.firstName,
-                              //                lastName: req.body.lastName,
-                              //                email: req.body.email,
-                              //                password: hash
-                              // });
-                              db.query("Select * From user",(error,resultat) =>{
-                                             if(error){
-                                               return res.status(400).json('error')
-                                             }
-                                             return res.status(200).json({message : resultat})
-                                           })                             
-                             
+               .then(hash =>{ 
+                        db.query(INSERT * into `user` (`email`, `password`, `firstname`, `lastname`)                                                                                                        
+                           ({email: email}, {password: password}, {firstName: firstName}, {lastName : lastName})    
+                              );                                                                                     
                })
                .catch(error => res.status(500).json({error}));
 };
@@ -46,21 +34,26 @@ exports.login = (req, res, next) =>{
                               .then(valid =>{
                                              if(!valid){
                                                             return res.status(401).json({error: 'mot de passe incorrect !'});
-                                             }
-                                             db.query("Select * From user",(error,resultat) =>{
+                                             }else{
+                                             db.query (SELECT 
+                                             `user`.email,
+                                             `user`.password,
+                                             `user`.firstName,
+                                             `user`.lastName,
+                                            FROM `groupomania`.user)                                            
+                                              };
                                               if(error){
-                                                return res.status(400).json('error')
+                                                return res.status(400).json(error)
                                               }
-                                              return res.status(200).json({message : resultat})
-                                            })    
-                                             res.status(200).json({
+                                              return res.status(200).json({message: "utilisateur trouver"})                                             
+                                               res.status(200).json({
                                                             user: user._id,
                                                             token: jwt.sign(
                                                                            {userId: user_id},
                                                                            process.env.JWT,
                                                                            {expiresIn: '24h'}
                                                             )
-                                             });
+                                             });                                        
                               })
                               .catch(error => res.status(500).json({ error}));
                })
