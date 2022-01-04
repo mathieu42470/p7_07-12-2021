@@ -1,20 +1,15 @@
 <template>
   <div id="app">
     <nav>
-      <homelink />
-      <a href="/about"> A propos </a>
-      <a href="/contact"> Contact</a>
+    
     </nav>
-    <p>Bienvenue sur notre page d'<homelink /></p>
-    <!-- <img alt="Vue logo" src="./assets/logo.png">
-
-    <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+  
     <HelloWorld></HelloWorld>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/header.vue'
 
 
 export default {
