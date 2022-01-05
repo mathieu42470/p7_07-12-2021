@@ -1,30 +1,30 @@
 <template>
-<div>
+<header>
+   <div>
      <img src="../../images/icon-left-font.png" >
      <div>
-       <button> se connecter </button>
+       <button> connexion </button>
      </div>
-</div>
-
+   </div>
+</header>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'header',
   props: {
     msg: String
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-div{
-  height: 20%;
+<style >
+header div{
   width: 100%;
   display: flex;
-  align-content: space-between;
+  justify-content: space-around;
   flex-direction: row;
+  align-items: center;
 }
 img{
    height: 15rem;
@@ -34,6 +34,7 @@ img{
 }
 button{
   display: flex;
-  vertical-align: end;
+  height: 20px;
+  align-items: center;
 }
 </style>
