@@ -5,10 +5,10 @@ const db = require('../MysqlParam');
 const  post  = require('../route/post');
 const con = require('../MysqlParam');
 
-const text = req.body.text;
-const url_image = req.body.url_image;
-const date = req.body.date;
-const id_post = req.body._id;
+// const text = req.body.text;
+// const url_image = req.body.url_image;
+// const date = req.body.date;
+// const id_post = req.body._id;
 
 // création du message //
 exports.createPost = (req, res, next) =>{

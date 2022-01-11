@@ -2,10 +2,10 @@ const Comment = require('../models/comment');
 const fs = require('fs');
 const { json } = require('express');
 
-const text = req.body.text;
-const url_image = req.body.url_image;
-const date = req.body.date;
-const id_commentaire = req.body._id;
+// const text = req.body.text;
+// const url_image = req.body.url_image;
+// const date = req.body.date;
+// const id_commentaire = req.body._id;
 
 // création de la possibilité de commentaires //
 exports.createComment = (req, res, next) =>{                           
