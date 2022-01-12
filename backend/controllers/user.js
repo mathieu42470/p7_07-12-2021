@@ -16,13 +16,16 @@ exports.signup =(req, res, next) => {
                bcrypt.hash(req.body.password, 10)
                .then(hash=>{ 
                         db.query (`INSERT * into user (email, password, firstname, lastname)
-                        values(?,?,?,?)`,(err,res,next)=>{
+                        values(?,?,?,?)` ,(err,res,next)=>{
+                          if(email=0, password=0, firstname=0, lastname=0){
+                            return console.error(err.message);
+                          }
                           if(err){
                             return console.error(err.message);
                           }
                           console.log(res.insertId);
                         } 
-               )                                                                                   
+               );                                                                                   
                })
                
 };
@@ -31,7 +34,7 @@ exports.signup =(req, res, next) => {
 
 exports.login = (req, res, next) =>{
   db.query("SELECT password FROM `groupomania`.user WHERE email=?",req.body.email,(err, res, next) =>{
-    if(!res){
+    if(res=0){
       return console.error(err.message);
     }
     if(res> 0){
