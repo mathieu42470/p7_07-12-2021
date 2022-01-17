@@ -4,52 +4,51 @@ const fs = require('fs');
 const db = require('../MysqlParam');
 const  post  = require('../route/post');
 const con = require('../MysqlParam');
-
-// const text = req.body.text;
-// const url_image = req.body.url_image;
-// const date = req.body.date;
-// const id_post = req.body._id;
+const { error } = require('console');
 
 // création du message //
 exports.createPost = (req, res, next) =>{
- db.query (INSERT * INTO `post` ( `text`, `url_image`,`date`)
-  ({text: text }, {url_image: url_image }, {date: date})
- )
-     post.save()
-         .then((post) => {
-            if(error){
-                return res.status(400).json('error')
-              }
-                 return res.status(200).JSON({message : resultat})
-                }) 
-         .catch(error => res.status(400).json({ error }))             
+  let playload = {
+    text : req.body.text,
+    like : req.body.like
+  }
+  console.log(playload);  
+ db.query (`INSERT INTO post SET ?`, playload, (err, rows) =>{
+    if(err){
+        return res.status(400).json({message : err.message})
+      }
+         return res.status(200).json({message : "message enregistrer"})
+ })          
 };
 
 // récupération des messages pour la page d'accueil //
 exports.getAllPost = (req, res, next) =>{
-  db.query(SELECT 
-    `post`.text,
-    `post`.url_image,
-    `post`.date,
-FROM `groupomania`.post)
-    if(error){
-      return res.status(400).json('error')
+  db.query(`SELECT * FROM post`, (err, result, fields) =>{
+if(error){
+      return res.status(400).json({message: err.message})
     }
-    return res.status(200).json({message : resultat})  
+    return res.status(200).json({message : result})  
+  })
+    
 };
 
 // récupération d'un message en particulier //
 exports.getOnepost = (req, res, next) =>{
-               db.query(SELECT `post`.id_post,
-               `post`.text,
-               `post`.url_image,
-               `post`.date,
-               FROM `groupomania`.post)
-                if(error){
-                  return res.status(400).json('error')
-                }
-                return res.status(200).json({message : resultat})   
-};
+               db.query(`SELECT text where id-utilisateur= ? ;`, (err, result, fields) =>{
+                 if(error){
+                  return res.status(500).json({message : err.message})
+                } else{
+                  var row ='';
+                  Object.keys(result).forEach((key) => {
+                     row = result[key];       
+                  });
+                 if(err){
+                  return res.status(500).json({message : err.message})
+                 }
+                 return res.status(500).json({message : result})
+               }
+              })
+   };
 
 // modification d'un message //
 exports.modifyPost = (req, res, next) =>{

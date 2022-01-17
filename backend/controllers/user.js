@@ -15,17 +15,21 @@ const db = require('../MysqlParam')
 exports.signup =(req, res, next) => {
                bcrypt.hash(req.body.password, 10)
                .then(hash=>{ 
-                        db.query (`INSERT * into user (email, password, firstname, lastname)
-                        values(?,?,?,?)` ,(err,res,next)=>{
-                          if(email=0, password=0, firstname=0, lastname=0){
-                            return console.error(err.message);
-                          }
+                let playload ={
+                  email : req.body.email,
+                  password : hash,
+                  firstname : req.body.firstname,
+                  lastname : req.body.lastname
+                }               
+                        db.query (`INSERT INTO user SET ?`,playload, (err,rows)=>{
                           if(err){
-                            return console.error(err.message);
+                            return res.status(500).json({message : err.message});
                           }
-                          console.log(res.insertId);
+                          return res.status(200).json({message : "utilisateur ajouté"}); 
                         } 
-               );                                                                                   
+
+               );           
+                                                                                    
                })
                
 };
@@ -33,25 +37,31 @@ exports.signup =(req, res, next) => {
 // connexion avec son mail et son mot de passe //
 
 exports.login = (req, res, next) =>{
-  db.query("SELECT password FROM `groupomania`.user WHERE email=?",req.body.email,(err, res, next) =>{
-    if(res=0){
-      return console.error(err.message);
+
+  db.query("SELECT password, id_user FROM `groupomania`.user WHERE email= ? ;",req.body.email,(err, result, fields) =>{
+    if(err){
+      return res.status(500).json({message : "Nous n'avons pas trouvé d'utilisateur"});
+    }else{
+      var row ='';
+      Object.keys(result).forEach((key) => {
+         row = result[key];       
+      });  
     }
-    if(res> 0){
-      bcrypt.compare(req.body.password, user.password).then((valid) => {
+    if(result.length> 0){
+      bcrypt.compare(req.body.password,row.password).then((valid) => {
         if(valid){
-          res.status(200).json({user: user._id,token: jwt.sign(
-                                                         {userId: user_id},
+          res.status(200).json({user: row.id_user,token: jwt.sign(
+                                                         {userId: row.id_user},
                                                          process.env.JWT,
                                                          {expiresIn: '24h'}
                                           )
         })
-        return console.log(token);
+       
       }else{
-        return console.error(err.message);
+        res.status(500).json({message : "mot de passe incorrect"});
       }
     })
     }
-       console.log(res[0].password)
+      
    })   
    }                                                               

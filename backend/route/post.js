@@ -8,8 +8,8 @@ const multer = require('../middleware/multer-config');
 // routes pour les messages envoyer par les utilisateurs //
 
 router.post('/', multer, postCtrl.createPost );
-router.get('/', multer, postCtrl.getAllPost);
-router.get('/:id', multer, postCtrl.getOnepost);
+router.get('/',  multer, postCtrl.getAllPost);
+router.get('/:id',  multer, postCtrl.getOnepost);
 router.put('/:id', multer, postCtrl.modifyPost);
 router.delete('/:id', multer, postCtrl.deletePost);
 router.post('/:id/like', postCtrl.likePost);
