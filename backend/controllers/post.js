@@ -13,7 +13,7 @@ exports.createPost = (req, res, next) =>{
     like : req.body.like
   }
   console.log(playload);  
- db.query (`INSERT INTO post SET ?`, playload, (err, rows) =>{
+ db.query ("INSERT INTO post SET ?", playload, (err, rows) =>{
     if(err){
         return res.status(400).json({message : err.message})
       }
@@ -28,13 +28,12 @@ if(error){
       return res.status(400).json({message: err.message})
     }
     return res.status(200).json({message : result})  
-  })
-    
+   })    
 };
 
 // récupération d'un message en particulier //
 exports.getOnepost = (req, res, next) =>{
-               db.query(`SELECT text where id-utilisateur= ? ;`, (err, result, fields) =>{
+               db.query(`SELECT text where id_utilisateur= ? ;`, (err, result, fields) =>{
                  if(error){
                   return res.status(500).json({message : err.message})
                 } else{
@@ -52,12 +51,12 @@ exports.getOnepost = (req, res, next) =>{
 
 // modification d'un message //
 exports.modifyPost = (req, res, next) =>{
-  db.query(UPDATE `groupomania`.post ({text: text}, {url_image: url_image })
-  );
-    if(error){
-      return res.status(400).json('error')
+  db.query(`UPDATE text SET post WHERE id_utilisateur= ?`, (err, result, fields) =>{
+    if(err){
+      return res.status(400).json({message : err.message})
     }
-    return res.status(200).json({message : resultat})
+    return res.status(200).json({message : result})
+  })
 }
 
 // suppression du message publié //

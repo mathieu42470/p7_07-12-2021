@@ -9,50 +9,53 @@ const { json } = require('express');
 
 // création de la possibilité de commentaires //
 exports.createComment = (req, res, next) =>{                           
-                db.query(INSERT * INTO `commentaire` (`text`)
-                ({text: text})
-                )
-                Comment.save()
-                .then(() => {
-                  if(error){
-                    return res.status(400).json('error')
-                  }
-                  return res.status(200).json({message : resultat})
-                }) 
+  let playload = {
+    text : req.body.text
+  }  
+ db.query (`INSERT INTO commentaire SET ?`, playload, (err, rows) =>{
+    if(err){
+        return res.status(400).json({message : err.message})
+      }
+         return res.status(200).json({message : "commentaire enregistrer"})
+ })  
 };
 
 // récupération de tous les commentaires //
 exports.getAllComment = (req, res, next)=>{
-               db.query(SELECT 
-                `commentaire`.text,
-            FROM `groupomania`.commentaire)
-                if(error){
-                  return res.status(400).json('error')
-                }
-                return res.status(200).json({message : resultat})
+  db.query(`SELECT * FROM commentaire`, (err, result, fields) =>{
+    if(error){
+          return res.status(400).json({message: err.message})
+        }
+        return res.status(200).json({message : result})  
+      })  
 };
 
 // récupération d'un commentaire en particulier //
 exports.getOneComment = (req, res, next) =>{
-  db.query(SELECT `commentaire`.id_commentaire,
-  `commentaire`.text,
-  `commentaire`.url_image,
-  `commentaire`.date,
-  FROM `groupomania`.commentaire)
-                if(error){
-                  return res.status(400).json('error')
-                }
-                return res.status(200).json({message : resultat})
+  db.query(`SELECT text where id_user= ?;`, (err, result, fields) =>{
+    if(error){
+     return res.status(500).json({message : err.message})
+   } else{
+     var row ='';
+     Object.keys(result).forEach((key) => {
+        row = result[key];       
+     });
+    if(err){
+     return res.status(500).json({message : err.message})
+    }
+    return res.status(500).json({message : result})
+  }
+ })
 };
 
 // modifier un commentaire //
 exports.modifyComment = (req, res, next)=>{
-  db.query(UPDATE `groupomania`.commentaire ({text: text}, {url_image: url_image })
-  );
-        if(error){
-          return res.status(400).json('error')
+  db.query(`UPDATE text SET commentaire WHERE id_user= ? `, (err, result, fields) =>{
+        if(err){
+          return res.status(400).json({message : err.message})
         }
-        return res.status(200).json({message : resultat})
+        return res.status(200).json({message : result})
+      })
 };
 
  // suppression d'un commentaire //
