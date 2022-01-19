@@ -38,13 +38,13 @@ exports.signup =(req, res, next) => {
 
 exports.login = (req, res, next) =>{
 
-  db.query("SELECT password, id_user FROM `groupomania`.user WHERE email= ? ;",req.body.email,(err, result, fields) =>{
+  db.query(`SELECT password, id_user FROM groupomania.user WHERE email= ? ;`,req.body.email,(err, result, fields) =>{
     if(err){
       return res.status(500).json({message : "Nous n'avons pas trouvé d'utilisateur"});
     }else{
       var row ='';
-      Object.keys(result).forEach((key) => {
-         row = result[key];       
+      Object.keys(result).forEach(function(key) {
+         row = result[key];      
       });  
     }
     if(result.length> 0){

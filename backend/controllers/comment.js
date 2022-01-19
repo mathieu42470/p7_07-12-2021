@@ -1,6 +1,7 @@
 const Comment = require('../models/comment');
 const fs = require('fs');
 const { json } = require('express');
+const db = require('../MysqlParam');
 
 // const text = req.body.text;
 // const url_image = req.body.url_image;

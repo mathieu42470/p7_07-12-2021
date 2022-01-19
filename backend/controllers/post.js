@@ -9,11 +9,9 @@ const { error } = require('console');
 // création du message //
 exports.createPost = (req, res, next) =>{
   let playload = {
-    text : req.body.text,
-    like : req.body.like
+    text : req.body.text
   }
-  console.log(playload);  
- db.query ("INSERT INTO post SET ?", playload, (err, rows) =>{
+ db.query (`INSERT INTO post SET ?`, playload, (err,rows)=>{
     if(err){
         return res.status(400).json({message : err.message})
       }
@@ -24,7 +22,7 @@ exports.createPost = (req, res, next) =>{
 // récupération des messages pour la page d'accueil //
 exports.getAllPost = (req, res, next) =>{
   db.query(`SELECT * FROM post`, (err, result, fields) =>{
-if(error){
+if(err){
       return res.status(400).json({message: err.message})
     }
     return res.status(200).json({message : result})  
@@ -33,12 +31,12 @@ if(error){
 
 // récupération d'un message en particulier //
 exports.getOnepost = (req, res, next) =>{
-               db.query(`SELECT text where id_utilisateur= ? ;`, (err, result, fields) =>{
-                 if(error){
+               db.query(`SELECT text FROM groupomania.post WHERE id_post= ? ;`, (err, result) =>{
+                 if(err){
                   return res.status(500).json({message : err.message})
                 } else{
                   var row ='';
-                  Object.keys(result).forEach((key) => {
+                  Object.keys(result).forEach(function(key) {
                      row = result[key];       
                   });
                  if(err){
@@ -51,7 +49,7 @@ exports.getOnepost = (req, res, next) =>{
 
 // modification d'un message //
 exports.modifyPost = (req, res, next) =>{
-  db.query(`UPDATE text SET post WHERE id_utilisateur= ?`, (err, result, fields) =>{
+  db.query(`UPDATE text SET post WHERE id_utilisateur= ?`, (err, result) =>{
     if(err){
       return res.status(400).json({message : err.message})
     }
