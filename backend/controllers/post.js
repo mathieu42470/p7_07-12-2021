@@ -97,7 +97,7 @@ exports.likePost = (req, res, next) =>{
 
   // Faire une rqt SELECT avec un WHERE sur l'id du post pour récupérer la liste des utilisateur qui aiment et qui n'aiment pas.
   Post.findOne({_id: postId})
-
+  db.query(`SELECT like FROM like`)
   //ici construire un objet post avec le resultat de la rqt
   .then(Post =>{
     switch(likes){

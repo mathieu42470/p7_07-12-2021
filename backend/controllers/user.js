@@ -37,7 +37,6 @@ exports.signup =(req, res, next) => {
 // connexion avec son mail et son mot de passe //
 
 exports.login = (req, res, next) =>{
-
   db.query(`SELECT password, id_user FROM groupomania.user WHERE email= ? ;`,req.body.email,(err, result, fields) =>{
     if(err){
       return res.status(500).json({message : "Nous n'avons pas trouvé d'utilisateur"});
@@ -61,7 +60,28 @@ exports.login = (req, res, next) =>{
         res.status(500).json({message : "mot de passe incorrect"});
       }
     })
-    }
-      
+    }      
    })   
-   }                                                               
+   }      
+   
+   // connexion au profil d'un autre utilisateur //
+   exports.connect = (req,res,next)=>{
+     if(req.params.id){
+     db.query(`SELECT firstname, lastname  FROM groupomania.user where id_user= ? ;`, req.params.id, (err, result)=>{
+      if(err){
+        return res.status(500).json({message : err.message})
+      } else{
+        var row ='';
+        Object.keys(result).forEach(function(key) {
+           row = result[key];       
+        });
+       if(err){
+        return res.status(500).json({message : err.message})
+       }
+       return res.status(200).json({message : result})
+     }
+     })
+    }else{
+      return res.status(500).json({message : "pas d'id"})
+    }
+   }
