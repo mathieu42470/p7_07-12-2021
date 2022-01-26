@@ -3,11 +3,6 @@ const fs = require('fs');
 const { json } = require('express');
 const db = require('../MysqlParam');
 
-// const text = req.body.text;
-// const url_image = req.body.url_image;
-// const date = req.body.date;
-// const id_commentaire = req.body._id;
-
 // création de la possibilité de commentaires //
 exports.createComment = (req, res, next) =>{                           
   let playload = {
@@ -23,19 +18,19 @@ exports.createComment = (req, res, next) =>{
 
 // récupération de tous les commentaires //
 exports.getAllComment = (req, res, next)=>{
-  db.query(`SELECT * FROM commentaire`, (err, result, fields) =>{
-    if(error){
+  db.query(`SELECT * FROM commentaire`, (err, result) =>{
+    if(err){
           return res.status(400).json({message: err.message})
         }
-        return res.status(200).json({message : result})  
+        return res.status(200).json({message : result})
       })  
 };
 
 // récupération d'un commentaire en particulier //
 exports.getOneComment = (req, res, next) =>{
   if(req.params.id){
-  db.query(`SELECT text where id_user= ?;`,req.params.id_commentaire, (err, result, fields) =>{
-    if(error){
+  db.query(`SELECT text FROM groupomania.commentaire WHERE id_user= ?;`,req.params.id, (err, result) =>{
+    if(err){
      return res.status(500).json({message : err.message})
    } else{
      var row ='';
@@ -45,7 +40,7 @@ exports.getOneComment = (req, res, next) =>{
     if(err){
      return res.status(500).json({message : err.message})
     }
-    return res.status(500).json({message : result})
+    return res.status(200).json({message : result})
   }
  })
 }else{
@@ -66,24 +61,10 @@ exports.modifyComment = (req, res, next)=>{
 
  // suppression d'un commentaire //
  exports.deleteComment = (req, res, next) =>{
-  db.query(`DELETE FROM commentaire WHERE id_commentaire =?;` ,req.params.id_post,(err, result)=>{
+  db.query(`DELETE FROM commentaire WHERE id_commentaire =?;` ,req.params.id_commentaire,(err, result)=>{
     if(err){
       return res.status(400).json({message : err.message})
     }
     return res.status(200).json({message : result})
   })
-              //  Comment.findOne({ _id: req.params.id})
-              //   .then(Comment => {      
-              //     const filename = Comment.imageUrl.split('/images/')[1];
-              //     fs.unlink(`images/${filename}`, () => {
-              //      Comment.deleteOne({ _id: req.params.id })
-              //      db.query("Select * From commentaire",(error,resultat) =>{
-              //       if(error){
-              //         return res.status(400).json('error')
-              //       }
-              //       return res.status(200).json({message : resultat})
-              //     }) 
-              //     })
-              //   })
-              //   .catch(error => res.status(500).json({ error }));
 };

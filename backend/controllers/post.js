@@ -43,7 +43,7 @@ exports.getOnepost = (req, res, next) =>{
                  if(err){
                   return res.status(500).json({message : err.message})
                  }
-                 return res.status(200).json({message : result})
+                 return res.status(200).json({message : "post modifié"})
                }
               })
             }else{
@@ -58,7 +58,7 @@ exports.modifyPost = (req, res, next) =>{
     if(err){
       return res.status(400).json({message : err.message})
     }
-    return res.status(200).json({message : result})
+    return res.status(200).json({message : "post supprimé"})
   })
 }
 
@@ -72,38 +72,24 @@ exports.deletePost = (req, res, next) => {
   }
   return res.status(200).json({message : result})
  })
-
-  //   Post.findOne({_id: req.params.id})
-  // .then(Post =>{
-  //   const filename = Message.imageUrl.split('/images/')[1];
-  //   fs.unlink(`images/${filename}`, () =>{
-  //     Post.deleteOne({_id: req.params.id})
-  //     db.query("Select * From post",(error,resultat) =>{
-  //       if(error){
-  //         return res.status(400).json('error')
-  //       }
-  //       return res.status(200).json({message : resultat})
-  //     })    
-  //   })
-  // })
-  // .catch(error => res.status(500).json({ error }));
 };
 
 // like du message //
 exports.likePost = (req, res, next) =>{
-  const likes = req.body.like;
-  const userId = req.body.userId;
-  const postId = req.params.id;
-
-  // Faire une rqt SELECT avec un WHERE sur l'id du post pour récupérer la liste des utilisateur qui aiment et qui n'aiment pas.
-  Post.findOne({_id: postId})
-  db.query(`SELECT like FROM like`)
+    // Faire une rqt SELECT avec un WHERE sur l'id du post pour récupérer la liste des utilisateur qui aiment et qui n'aiment pas.
+  db.query(`SELECT numberlike FROM groupomania.like WHERE id_user`, (err, result) =>{
+    if(err){
+      return res.status(400).json({message : err.message})
+    }else{
   //ici construire un objet post avec le resultat de la rqt
-  .then(Post =>{
+     let likes = {
+    result
+     }
+  
     switch(likes){
       // message non like
       case 0:
-        if(Post.usersLiked.indexOf(userId)!= -1){
+        if(Post.like.indexOf(id_user)!= -1){
           Post.likes -= 1
         }
         result = "0"
@@ -112,17 +98,15 @@ exports.likePost = (req, res, next) =>{
         case 1:
           Post.likes += 1;
           result = "1";
-    }
-    //ici faire une rqt UPDATE pour mettre à jour la table post / dislikes/ likes
-    Post.save();
-  })
-  .then(() =>{
-    db.query(INSERT * INTO `groupomania`.post,
-    ({likes})
-    )
-      if(error){
-        return res.status(400).json('error')
       }
-      return res.status(200).json({message : resultat}) 
-})
-}
+    //ici faire une rqt UPDATE pour mettre à jour la table post / dislikes/ likes
+    db.query(`UPDATE like SET numberlike =? WHERE id_user `,req.body.id_post, (err, result) =>{
+      if(err){
+        return res.status(400).json({message : err.message})
+      }else{
+         return res.status(200).json({message: "like ajouté"})
+      }
+    })
+  }
+   })
+   }
