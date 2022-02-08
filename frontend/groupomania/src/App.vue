@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <Header />
+      <Form />
       <!-- <Formulaire />   -->
     </div>
     <router-view/>
@@ -12,9 +13,10 @@
 
 // import Formulaire from './components/form.vue'
 import Header from './components/header.vue'
+import Form from './components/form.vue'
 
 export default {
-  components: { Header },
+  components: { Header, Form },
   name: 'App',
  }
  

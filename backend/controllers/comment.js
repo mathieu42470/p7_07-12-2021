@@ -2,13 +2,15 @@ const Comment = require('../models/comment');
 const fs = require('fs');
 const { json } = require('express');
 const db = require('../MysqlParam');
+const con = require('../MysqlParam');
 
 // création de la possibilité de commentaires //
 exports.createComment = (req, res, next) =>{                           
-  let playload = {
-    text : req.body.text
-  }  
- db.query (`INSERT INTO commentaire SET ?`, playload, (err, rows) =>{
+  // let playload = {
+  //   text : req.body.text
+  //   id_user : req.body.id
+  // }  
+ db.query (`INSERT INTO commentaire SET ?`, req.body, (err, rows) =>{
     if(err){
         return res.status(400).json({message : err.message})
       }
@@ -18,11 +20,15 @@ exports.createComment = (req, res, next) =>{
 
 // récupération de tous les commentaires //
 exports.getAllComment = (req, res, next)=>{
-  db.query(`SELECT * FROM commentaire`, (err, result) =>{
+ 
+  db.query(`SELECT * FROM groupomania.commentaire`, (err, result, fields) =>{
     if(err){
           return res.status(400).json({message: err.message})
-        }
+        }else{
+         
         return res.status(200).json({message : result})
+         }
+         
       })  
 };
 
@@ -40,7 +46,7 @@ exports.getOneComment = (req, res, next) =>{
     if(err){
      return res.status(500).json({message : err.message})
     }
-    return res.status(200).json({message : result})
+    return res.status(200).json({message : row})
   }
  })
 }else{
@@ -55,7 +61,7 @@ exports.modifyComment = (req, res, next)=>{
         if(err){
           return res.status(400).json({message : err.message})
         }
-        return res.status(200).json({message : result})
+        return res.status(200).json({message : "commentaire modifié"})
       })    
 };
 
@@ -65,6 +71,6 @@ exports.modifyComment = (req, res, next)=>{
     if(err){
       return res.status(400).json({message : err.message})
     }
-    return res.status(200).json({message : result})
+    return res.status(200).json({message :"commentaire supprimé"})
   })
 };

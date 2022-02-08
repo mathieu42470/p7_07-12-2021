@@ -43,7 +43,7 @@ exports.getOnepost = (req, res, next) =>{
                  if(err){
                   return res.status(500).json({message : err.message})
                  }
-                 return res.status(200).json({message : "post modifié"})
+                 return res.status(200).json({message : result})
                }
               })
             }else{
@@ -57,24 +57,23 @@ exports.modifyPost = (req, res, next) =>{
     if(err){
       return res.status(400).json({message : err.message})
     }
-    return res.status(200).json({message : "post supprimé"})
+    return res.status(200).json({message : "post modifié"})
   })
 }
 
 // suppression du message publié //
 exports.deletePost = (req, res, next) => {
-
-  console.log(req.params.id)
  db.query(`DELETE FROM post WHERE id_post =?;` ,req.params.id_post,(err, result)=>{
   if(err){
     return res.status(400).json({message : err.message})
   }
-  return res.status(200).json({message : result})
+  return res.status(200).json({message : "post supprimé"})
  })
 };
 
 // like du message //
 exports.likePost = (req, res, next) =>{
+  
   
     switch(req.body.like){
       // message non like
@@ -90,7 +89,9 @@ exports.likePost = (req, res, next) =>{
               if(err){
                 return res.status(400).json({message : err.message})
               }else{
-                db.query(`UPDATE Post SET likes= ? WHERE id_post= ?`,[req.body.nblikes ,req.body.id_post], (err, result) =>{
+                
+                let nblikes = req.body.nblikes;
+                db.query(`UPDATE Post SET likes= likes - 1 WHERE id_post= ?`,[req.body.id_post], (err, result) =>{
                   
                   if(err){
                     return res.status(400).json({message : err.message})
@@ -113,14 +114,16 @@ exports.likePost = (req, res, next) =>{
               
               return res.status(400).json({message : err.message})
             }
-            if(result){
+            if(result.length > 0){
+              console.log(result)
               return res.status(200).json({message : "Tu aimes déjà"})
             }else{
-              db.query(`INSERT FROM groupomania.like WHERE id_user= ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
+              db.query(`INSERT INTO groupomania.like SET ?`,{id_user : req.body.id_user, id_post : req.body.id_post}, (err, result) =>{
                   if(err){
                   return res.status(400).json({message : err.message})
                 }else{
-                  db.query(`UPDATE Post SET likes= ? WHERE id_post= ?`,[req.body.nblikes ,req.body.id_post], (err, result) =>{
+                 
+                  db.query(`UPDATE Post SET likes= likes + 1 WHERE id_post= ?`,[req.body.id_post], (err, result) =>{
                                         if(err){
                       return res.status(400).json({message : err.message})
                     }else{

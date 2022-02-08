@@ -21,7 +21,7 @@ const corsOption ={
 app.use(cors(corsOption));
 
 app.use('/api/post', postRoutes);
-app.use('/api/post', commentRoutes);
+app.use('/api/commentaire', commentRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
