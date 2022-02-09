@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="corps">
       <form name="form1" method="POST" action="">
           <div class="form">
              <label class="label" for="firstName">Prénom</label>
@@ -17,9 +17,8 @@
             <label class="label" for="password">mot de passe</label>
             <input id="password" class="input" type="password" name="password" />
           </div>
-          <div>
-           
-          <button> s'inscrire </button>/>
+          <div>           
+          <button> s'inscrire </button>
           </div>
           </form>
     </div>
@@ -33,5 +32,20 @@ export default {
 }
 </script>
 <style >
-
+.corps{
+  height: 20rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+button{
+  align-items: center ;
+}
 </style>

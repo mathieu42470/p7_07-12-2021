@@ -1,12 +1,10 @@
 <template>
-<header>
-   <div>
-     <img src="../../images/icon-left-font.png" >
+   <header>
+     <img src="../../images/icon-left-font-monochrome-white.png" >
      <div>
        <button> connexion </button>
      </div>
-   </div>
-</header>
+   </header>
 </template>
 
 <script>
@@ -19,12 +17,14 @@ export default {
 </script>
 
 <style >
-header div{
+ header{
   width: 100%;
+  height: 10rem;
   display: flex;
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
+  background-color: rgb(253, 45, 1);
 }
 img{
    height: 15rem;
