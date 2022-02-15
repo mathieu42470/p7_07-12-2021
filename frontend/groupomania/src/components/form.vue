@@ -1,34 +1,60 @@
 <template>
     <div class="corps">
-      <form name="form1" method="POST" action="">
+      <h1>Inscription</h1>
+      <form class="form1" name="form1" method="post" enctype="application/x-www-form-urlencoded" >
           <div class="form">
-             <label class="label" for="firstName">Prénom</label>
-             <input id="firstName" class="input" type="text" name="firstName"/>
+             <label class="label" for="firstName">Prénom : </label>
+             <input id="firstName" type="text" name="firstName" v-model="user.firstname"/>
           </div>
           <div class="form">
-             <label class="label" for="lastName">Nom</label>
-             <input id="lastName" class="input" type="text" name="lastName"/>
-          </div> 
+             <label class="label" for="lastName">Nom : </label>
+             <input id="lastName" type="text" name="lastName"  v-model="user.lastname"/>
+           </div> 
           <div class="form">
-             <label class="label" for="email">Adresse e-mail</label>
-             <input id="email" class="input" type="email" name="email"/>
+             <label class="label" for="email">Adresse e-mail : </label>
+             <input id="email" type="email" name="email"  v-model="user.email"/>
+           
           </div>
           <div class="form">
-            <label class="label" for="password">mot de passe</label>
-            <input id="password" class="input" type="password" name="password" />
-          </div>
+            <label class="label" for="password">mot de passe : </label>
+            <input id="password" type="password" name="password" v-model="user.password" />
+           </div>
           <div>           
-          <button> s'inscrire </button>
+            <input v-on:click="onsubmit" class="button" type="button" value='envoyer'/>
           </div>
           </form>
     </div>
 </template>
 <script>
+ 
 export default {
   name: 'Formulaire',
   props: {
     msg: String
-  }
+  },
+  data: function () {
+    return {
+        user : {
+        password : '',
+        email : '',
+        firstname: '',
+        lastname: ''
+      }
+    }
+  },
+  methods:{
+      onsubmit(e) {
+      e.preventDefault();
+     
+      fetch('http://localhost:3000/api/user/signup',{
+        method : 'POST',
+        body : this.user
+      }).then((data) => data.json()).then((result) =>{
+        console.log(result)
+      })    
+     }, 
+  
+}
 }
 </script>
 <style >
@@ -39,13 +65,20 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-form{
+.form1{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+    width: 50%;
+}
+.form{
   display: flex;
-  flex-direction: column;
   align-items: center;
+  margin: 2px;
   width: 50%;
 }
-button{
+.button{
+  display: flex;
   align-items: center ;
 }
 </style>

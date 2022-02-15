@@ -5,32 +5,29 @@ const user = require('../models/user');
 
 const db = require('../MysqlParam')
 
-//  const email = req.body.email; 
-//                  const firstName = req.body.firstname; 
-//                  const lastName = req.body.lastname; 
-//                  const password = req.body.password; 
-
 // inscription des utilisateurs dans la base de donnée //
 
-exports.signup =(req, res, next) => {
+exports.signup = async(req, res, next) => {
+  try{
                bcrypt.hash(req.body.password, 10)
-               .then(hash=>{ 
-                let playload ={
+               .then(hash=> { 
+                let data ={
                   email : req.body.email,
                   password : hash,
                   firstname : req.body.firstname,
                   lastname : req.body.lastname
                 }               
-                        db.query (`INSERT INTO user SET ?`,playload, (err,rows)=>{
+                        db.query (`INSERT INTO user SET ?`,data, (err,rows)=>{
                           if(err){
                             return res.status(500).json({message : err.message});
                           }
                           return res.status(200).json({message : "utilisateur ajouté"}); 
                         } 
-
-               );           
-                                                                                    
+               );                                                                          
                })
+              }catch(err) {
+                console.error('handle the err: ', err)
+               }
                
 };
 
