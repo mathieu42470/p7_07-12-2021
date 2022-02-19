@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const user = require('../models/user');
+//const user = require('../models/user');
 
 const db = require('../MysqlParam')
 
@@ -9,8 +9,8 @@ const db = require('../MysqlParam')
 
 exports.signup = async(req, res, next) => {
   try{
-               bcrypt.hash(req.body.password, 10)
-               .then(hash=> { 
+    console.log(req.body)
+               bcrypt.hash(req.body.password, 10).then(hash => { 
                 let data ={
                   email : req.body.email,
                   password : hash,

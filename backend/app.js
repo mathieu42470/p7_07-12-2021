@@ -11,8 +11,6 @@ const userRoutes = require('./route/user');
 const  db  = require('./models/user');
 
 
-
-
 const app = express();
 app.use(bodyParser.json());
 const corsOption ={

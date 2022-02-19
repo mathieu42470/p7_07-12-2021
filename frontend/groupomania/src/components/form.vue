@@ -32,20 +32,21 @@ export default {
   props: {
     msg: String
   },
-  data: function () {
+  data() {
     return {
-        user : {
-        password : '',
-        email : '',
-        firstname: '',
-        lastname: ''
-      }
+         password : '',
+         email : '',
+         firstname: '',
+         lastname: ''
+              
     }
   },
   methods:{
       onsubmit(e) {
       e.preventDefault();
-     
+     //console.log(this.$data.user)
+     var item = this.user;
+     console.log(item)
       fetch('http://localhost:3000/api/user/signup',{
         method : 'POST',
         body : this.user
