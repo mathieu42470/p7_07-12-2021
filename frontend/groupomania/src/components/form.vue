@@ -1,7 +1,7 @@
 <template>
     <div class="corps">
       <h1>Inscription</h1>
-      <form class="form1" name="form1" method="post" enctype="application/x-www-form-urlencoded" >
+      <form class="form1" name="inscription" method="post" enctype="application/x-www-form-urlencoded" >
           <div class="form">
              <label class="label" for="firstName">Prénom : </label>
              <input id="firstName" type="text" name="firstName" v-model="user.firstname"/>
@@ -34,24 +34,23 @@ export default {
   },
   data() {
     return {
-         password : '',
-         email : '',
-         firstname: '',
-         lastname: ''
-              
-    }
+      user: [
+         {password : ''},
+         {email : ''},
+         {firstname: ''},
+         {lastname: ''}
+          ]
+          }                                 
   },
-  methods:{
+  methods: {
       onsubmit(e) {
       e.preventDefault();
-     //console.log(this.$data.user)
-     var item = this.user;
-     console.log(item)
+     console.log(this.user)
       fetch('http://localhost:3000/api/user/signup',{
         method : 'POST',
         body : this.user
       }).then((data) => data.json()).then((result) =>{
-        console.log(result)
+        console.log("je suis la", result)
       })    
      }, 
   

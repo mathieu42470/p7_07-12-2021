@@ -3,6 +3,7 @@
     <div id="nav">
       <Header />
       <Form />
+      <connexion/>
       <Footer/>
     </div>
     <router-view/>
@@ -14,9 +15,10 @@
 import Header from './components/header.vue'
 import Form from './components/form.vue'
 import Footer from './components/footer.vue'
+import connexion from './components/connexion.vue'
 
 export default {
-  components: { Header, Form, Footer },
+  components: { Header, Form, connexion, Footer },
   name: 'App',
  }
  
