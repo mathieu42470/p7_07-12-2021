@@ -2,8 +2,10 @@
   <div id="app">
     <div id="nav">
       <Header />
+      <div class="formulaire">
       <Form />
       <connexion/>
+      </div>
       <Footer/>
     </div>
     <router-view/>
@@ -25,4 +27,8 @@ export default {
 </script>
 
 <style>
+.formulaire{
+  display: flex;
+  
+}
 </style>

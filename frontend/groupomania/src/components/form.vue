@@ -48,9 +48,9 @@ export default {
      console.log(this.user)
       fetch('http://localhost:3000/api/user/signup',{
         method : 'POST',
-        body : this.user
+        body : this.$data.user 
       }).then((data) => data.json()).then((result) =>{
-        console.log("je suis la", result)
+        console.log( result)
       })    
      }, 
   
@@ -64,18 +64,18 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 50%;
 }
 .form1{
    display: flex;
    flex-direction: column;
    align-items: center;
-    width: 50%;
+    width: 100%;
 }
 .form{
   display: flex;
   align-items: center;
   margin: 2px;
-  width: 50%;
 }
 .button{
   display: flex;

@@ -34,9 +34,10 @@ exports.signup = async(req, res, next) => {
 // connexion avec son mail et son mot de passe //
 
 exports.login = (req, res, next) =>{
+  console.log(req)
   db.query(`SELECT password, id_user FROM groupomania.user WHERE email= ? ;`,req.body.email,(err, result, fields) =>{
     if(err){
-      return res.status(500).json({message : "Nous n'avons pas trouvé d'utilisateur"});
+      return res.status(500).json({message : "Nous n'avons pas trouvé d'utilisateur "+err});
     }else{
       var row ='';
       Object.keys(result).forEach(function(key) {
