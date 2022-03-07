@@ -13,6 +13,5 @@ var con = mySQL.createConnection({
                if(err) throw err;
              });
              
-             
-             
+                          
              module.exports = con;

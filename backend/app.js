@@ -8,7 +8,6 @@ const cors = require('cors');
 const postRoutes = require('./route/post');
 const commentRoutes = require('./route/comment');
 const userRoutes = require('./route/user');
-const  db  = require('./models/user');
 
 
 const app = express();

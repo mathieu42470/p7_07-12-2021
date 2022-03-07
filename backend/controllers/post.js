@@ -1,5 +1,4 @@
 const  json  = require('express');
-const Posts = require('../models/post');
 const fs = require('fs');
 const db = require('../MysqlParam');
 const  post  = require('../route/post');

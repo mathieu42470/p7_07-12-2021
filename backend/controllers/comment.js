@@ -1,4 +1,3 @@
-const Comment = require('../models/comment');
 const fs = require('fs');
 const { json } = require('express');
 const db = require('../MysqlParam');

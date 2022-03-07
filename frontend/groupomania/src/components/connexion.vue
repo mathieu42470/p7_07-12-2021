@@ -37,7 +37,7 @@ export default {
             
             
             let stringifi = {email:  this.user.email, password : this.user.password}
-            console.log(stringifi.toString());
+            // console.log(stringifi.toString());
             const res = await fetch('http://localhost:3000/api/user/login',{
                   headers:{
                         'Accept':'application/json'
@@ -46,7 +46,7 @@ export default {
                   body : JSON.stringify(stringifi)
              });
             if(res.ok){
-                  console.log('cool')
+            //       console.log('cool')
             }
             //  .then((data) => data.json())
             //  .then((result) =>{ 
