@@ -27,31 +27,20 @@ export default {
                   user:{
                     email: '',
                     password: ''
-                  }
-              
+                  }              
         }
   },
   methods: {
-         async Envoi(){   
-           // var puser =   await JSON.stringify(this.user)      
-            
-            
-            let stringifi = {email:  this.user.email, password : this.user.password}
-            // console.log(stringifi.toString());
-            const res = await fetch('http://localhost:3000/api/user/login',{
-                  headers:{
-                        'Accept':'application/json'
-                  },
-                  method: 'POST',
-                  body : JSON.stringify(stringifi)
-             });
-            if(res.ok){
-            //       console.log('cool')
-            }
-            //  .then((data) => data.json())
-            //  .then((result) =>{ 
-            //        console.log(result);           
-            // }) 
+        Envoi(e){    
+             e.preventDefault();
+             fetch('http://localhost:3000/api/user/login',{
+                   method: 'POST',
+                   headers:{"Accept":"application/json"},
+                   body : JSON.stringify(this.user)
+             })
+             .then((data) => data.json()).then((result) =>{ 
+                   console.log(result);           
+            }) 
         }
   }
 } 

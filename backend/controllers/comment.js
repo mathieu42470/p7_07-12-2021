@@ -1,14 +1,9 @@
 const fs = require('fs');
 const { json } = require('express');
 const db = require('../MysqlParam');
-const con = require('../MysqlParam');
 
 // création de la possibilité de commentaires //
 exports.createComment = (req, res, next) =>{                           
-  // let playload = {
-  //   text : req.body.text
-  //   id_user : req.body.id
-  // }  
  db.query (`INSERT INTO commentaire SET ?`, req.body, (err, rows) =>{
     if(err){
         return res.status(400).json({message : err.message})

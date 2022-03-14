@@ -34,12 +34,12 @@ export default {
   },
   data() {
     return {
-      user: [
-         {password : ''},
-         {email : ''},
-         {firstname: ''},
-         {lastname: ''}
-          ]
+      user: {
+         password : '',
+         email : '',
+         firstname: '',
+         lastname: '',
+      }
           }                                 
   },
   methods: {
@@ -48,12 +48,12 @@ export default {
      console.log(this.user)
       fetch('http://localhost:3000/api/user/signup',{
         method : 'POST',
-        body : this.$data.user 
+        headers:{"Content-Type":"application/json"},
+        body : JSON.stringify(this.user )
       }).then((data) => data.json()).then((result) =>{
         console.log( result)
       })    
-     }, 
-  
+     },
 }
 }
 </script>
