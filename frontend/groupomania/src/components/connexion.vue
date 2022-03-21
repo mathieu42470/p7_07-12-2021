@@ -23,26 +23,34 @@ export default {
   msg: String      
   },
   data() {
-        return {
-                  user:{
-                    email: '',
-                    password: ''
-                  }              
-        }
+      return {
+            user:{
+                  email: '',
+                  password: ''
+            }              
+      }
   },
   methods: {
         Envoi(e){    
              e.preventDefault();
-             fetch('http://localhost:3000/api/user/login',{
+      console.log(JSON.stringify(this.user))
+                   fetch('http://localhost:3000/api/user/login',{
                    method: 'POST',
-                   headers:{"Accept":"application/json"},
+                   headers:{"Content-Type":"application/json"},
                    body : JSON.stringify(this.user)
              })
              .then((data) => data.json()).then((result) =>{ 
-                   console.log(result);           
+
+                   localStorage.setItem("Token",result.token);
+                          
             }) 
         }
-  }
+  },
+mounted: () =>{
+     
+      console.log("je suis appelé")
+      
+}
 } 
 </script>
 <style>
