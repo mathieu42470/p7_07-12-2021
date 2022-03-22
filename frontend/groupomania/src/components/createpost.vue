@@ -5,11 +5,11 @@
           <form method="post" class="form1" name="create">
                <div>
                 <label for="text">texte: </label>         
-                <input class="texte" type="text" name="text"  v-model="post.text"/>
+                <textarea class="texte"  name="text" placeholder="mon post"  v-model="post.text"/>
                </div>
                 <div>
                     <label for="image">url image: </label>         
-                    <input class="texte" type="url_image" name="image"  v-model="post.url_image"/>  
+                    <input class="texte" type="file" name="image" />  
                 </div>
                 <div>           
                     <input v-on:click="onsubmit" class="button" type="button" value='envoyer'/>
@@ -40,14 +40,10 @@ export default {
                 headers:{"Content-Type":"application/json"},
                 body : JSON.stringify(this.post )
             }).then((data) => data.json()).then((result) =>{
-                console.log( result)
+                 this.$router.go()
+                console.log(result)
          })            
-         },
-         mounted: () =>{
-     
-      console.log("je suis appelé")
-      
-}
+         }
        }
   }       
 
@@ -55,7 +51,7 @@ export default {
 <style>
 .post{
      width: 100%;
-     height: 15rem;
+     height: 20rem;
 }
 .texte {
     width: 100%;

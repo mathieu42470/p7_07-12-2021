@@ -42,7 +42,7 @@ export default {
              .then((data) => data.json()).then((result) =>{ 
 
                    localStorage.setItem("Token",result.token);
-                          
+                   this.$router.push("/about")       
             }) 
         }
   },
