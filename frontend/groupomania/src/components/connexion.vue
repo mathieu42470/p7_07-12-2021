@@ -46,11 +46,11 @@ export default {
             }) 
         }
   },
-mounted: () =>{
+// mounted: () =>{
      
-      console.log("je suis appelé")
+//       console.log("je suis appelé")
       
-}
+// }
 } 
 </script>
 <style>

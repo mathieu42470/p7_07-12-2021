@@ -41,7 +41,7 @@ export default {
                 body : JSON.stringify(this.post )
             }).then((data) => data.json()).then((result) =>{
                  this.$router.go()
-                console.log(result)
+                 console.log(result);
          })            
          }
        }

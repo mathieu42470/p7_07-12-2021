@@ -1,13 +1,13 @@
 <template>
       <div>
-            <article class="article" id="displayArticle">
+            <article class="article" >
                    <div class="nom">
-                    <a class="firstname" {{user.firstname}}/>
-                    <a class="lastname" {{user.lastname}}/>
+                    <a class="firstname"> {{user.firstname}}</a>
+                    <a class="lastname"> {{user.lastname}}</a>
                    </div>
                    <div class="text">
-                         <a class="text" {{post.text}}/>
-                         <a class="url" {{post.url_image}}/>
+                         <a class="text"> {{post.text}}</a>
+                         <a class="url"> {{post.url_image}}</a>
                    </div> 
                    <button class="like">j'aime</button>                 
             </article>                  
@@ -21,30 +21,23 @@ export default {
   },
   data() {
         return{
+      post: {        
+        text: '',
+        url_image:''
+      },
       user: {
         firstname: '',
         lastname: ''
-      },
-      post:{
-           text: '',
-           url_image: '',
-      }
-    }                           
+        }
+  };                           
   },
-  methods: {
-      onsubmit(e) {
-      e.preventDefault();
-     console.log(this.user)
-      fetch('http://localhost:3000/api/post/',{
-        method : 'GET',
-        headers:{"Content-Type":"application/json"},
-        body : JSON.parse(this.displayArticle )
-      }).then((data) => data.json()).then((result) =>{
-        console.log( result)
-      })    
-     }
-}       
-}
+ created() {
+         fetch('http://localhost:3000/api/post/')          
+         .then(response => response.json(this.data))       
+         .then(data => (this.data = data.total));
+         console.log(this.data)    
+  }          
+};
 </script>
 <style>
 .article{
