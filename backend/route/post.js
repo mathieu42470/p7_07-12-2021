@@ -7,7 +7,7 @@ const multer = require('../middleware/multer-config');
 
 // routes pour les messages envoyer par les utilisateurs //
 
-router.post('/', multer, postCtrl.createPost );
+router.post('/', Auth, multer, postCtrl.createPost );
 router.get('/',  multer, postCtrl.getAllPost);
 router.get('/:id',  multer, postCtrl.getOnepost);
 router.put('/', multer, postCtrl.modifyPost);

@@ -6,11 +6,11 @@ const con = require('../MysqlParam');
 const { error } = require('console');
 
 // création du message //
-exports.createPost = (req, res, next) =>{
+exports.createPost = (req, res, next) =>{ 
   let playload = {
     text : req.body.text,
     url_image : req.body.url_image,
-    id_user : req.body.id_user
+    id_user : req.body.userId
   }
  db.query (`INSERT INTO post SET ?`, playload, (err,rows)=>{
     if(err){

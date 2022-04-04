@@ -13,6 +13,7 @@ const multer = require('multer');
                                callback(null, 'images');
                 },
                 filename: (req, file, callback)=> {
+                               console.log(file)
                                const name = file.originalname.split(' ').join('_');
                                const extension = MIME_TYPES[file.mimetype];
                                callback(null, name + Date.now() + '.'+ extension);

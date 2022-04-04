@@ -34,7 +34,7 @@ exports.signup = async(req, res, next) => {
 // connexion avec son mail et son mot de passe //
 
 exports.login = (req, res, next) =>{
-  console.log(req.body)
+
   db.query(`SELECT password, id_user FROM groupomania.user WHERE email= ?;`,req.body.email,(err, result, fields) =>{
     console.log(req.body.email)
     if(err){
@@ -61,7 +61,7 @@ exports.login = (req, res, next) =>{
     }      
    })   
    }      
-   
+  
    // connexion au profil d'un autre utilisateur //
    exports.connect = (req,res,next)=>{
      if(req.params.id){
