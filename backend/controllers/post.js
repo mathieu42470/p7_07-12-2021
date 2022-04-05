@@ -8,9 +8,8 @@ const { error } = require('console');
 // création du message //
 exports.createPost = (req, res, next) =>{ 
   let playload = {
-    text : req.body.text,
-    url_image : req.body.url_image,
-    id_user : req.body.userId
+    text : req.body.txt,
+    url_image : `${req.protocol}://${req.get('host')}/image/`+req.file.filename, 
   }
  db.query (`INSERT INTO post SET ?`, playload, (err,rows)=>{
     if(err){

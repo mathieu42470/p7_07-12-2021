@@ -34,30 +34,25 @@ export default {
   },
   methods:{
      previewFile(e){             
-          this.post.file = e.target.files[0];
-         const fileObjet = 
-         JSON.parse(this.post.file);    
-         delete fileObjet._id;
-         const file = new file({
-         ...fileObjet,
-         image_url:
-         `${this.protocol}://${this.get('host')}/images/${this.file.filename}`
-         });
-         file.save()                      
-        .then((res) => res.status(201).json({message: "Objet enregistrer !"}))
-        .catch(error => error.status(400).json({error}));   
+          this.post.file = e.target.files[0];  
          },
 
        onsubmit(e) {
       e.preventDefault();
 
+          let form = new FormData();
+          form.append("image",this.post.file)
+          form.append("txt", this.post.text)
+
+         
      
          fetch('http://localhost:3000/api/post',{
                 method : 'POST',
-                headers:{"Content-Type":"application/json","Authorization" : "Bearer "+localStorage.getItem("Token")},
-                body : JSON.stringify(this.post ),                
+                headers:{                   
+                     "Authorization" : "Bearer "+localStorage.getItem("Token")},
+                body : form                
             }).then((data) => data.json()).then((result) =>{
-                 //this.$router.go()
+                 this.$router.go()
                  console.log(result);
          })            
          },

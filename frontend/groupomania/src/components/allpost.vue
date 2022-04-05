@@ -32,10 +32,17 @@ export default {
   };                           
   },
  created() {
-         fetch('http://localhost:3000/api/post/')          
+         fetch('http://localhost:3000/api/post/',{
+               method : 'GET',
+               headers : {"Authorization" : "Bearer "+localStorage.getItem("Token")},
+               body: JSON.stringify(this.data)
+         })          
          .then(response => response.json(this.data))       
-         .then(data => (this.data = data.total));
-         console.log(this.data)    
+         .then(data =>{
+               (this.data = data.total) 
+              console.log(this.data)  
+         })
+         
   }          
 };
 </script>
@@ -44,6 +51,8 @@ export default {
       width: 100%;
       height: 20rem;
       display: flex;
+      flex-direction: column;
+      border: solid black;
 }
 .nom{
       width: 50%;
@@ -53,5 +62,11 @@ export default {
 .text{
       display: flex;
       flex-direction: row;
+}
+.like 
+{
+      display: flex;
+      width: 50px;
+      height: 20px;
 }
 </style>
