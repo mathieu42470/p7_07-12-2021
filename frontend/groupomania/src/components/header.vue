@@ -2,7 +2,7 @@
    <header>
      <img src="../../images/icon-left-font-monochrome-white.png" >
      <div>
-       <button> connexion </button>
+       <button > connexion </button>
      </div>
    </header>
 </template>

@@ -38,9 +38,8 @@ export default {
                body: JSON.stringify(this.data)
          })          
          .then(response => response.json(this.data))       
-         .then(data =>{
-               (this.data = data.total) 
-              console.log(this.data)  
+         .then(response =>{
+               (this.response = response) 
          })
          
   }          

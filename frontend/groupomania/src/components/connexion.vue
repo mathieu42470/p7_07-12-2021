@@ -33,24 +33,18 @@ export default {
   methods: {
         Envoi(e){    
              e.preventDefault();
-      console.log(JSON.stringify(this.user))
                    fetch('http://localhost:3000/api/user/login',{
                    method: 'POST',
                    headers:{"Content-Type":"application/json"},
                    body : JSON.stringify(this.user)
              })
              .then((data) => data.json()).then((result) =>{ 
-
-                   localStorage.setItem("Token",result.token);
-                   this.$router.push("/about")       
+                   localStorage.setItem("userid", result.user)                
+                    localStorage.setItem("Token",result.token);
+                   this.$router.push("/about")      
             }) 
         }
   },
-// mounted: () =>{
-     
-//       console.log("je suis appelé")
-      
-// }
 } 
 </script>
 <style>
