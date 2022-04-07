@@ -1,16 +1,16 @@
 <template>
-      <div>
-            <article class="article" >
+      <div >
+            <div class="article" >
                    <div class="nom">
-                    <a class="firstname"> {{user.firstname}}</a>
-                    <a class="lastname"> {{user.lastname}}</a>
+                    <span v-text="message.author.firstname"></span>
+                    <span class="lastname" v-text="message.author.firstname" ></span>
                    </div>
                    <div class="text">
-                         <a class="text"> {{post.text}}</a>
-                         <a class="url"> {{post.url_image}}</a>
+                         <span class="text" v-text="message.text.text"></span>
+                         <span class="url" v-text="message.text.text"></span>
                    </div> 
                    <button class="like">j'aime</button>                 
-            </article>                  
+            </div>                  
       </div>        
 </template>
 <script>
@@ -21,17 +21,11 @@ export default {
   },
   data() {
         return{
-      post: {        
-        text: '',
-        url_image:''
-      },
-      user: {
-        firstname: '',
-        lastname: ''
-        }
-  };                           
+     
+                              
+  }
   },
- created() {
+ created()  {
          fetch('http://localhost:3000/api/post/',{
                method : 'GET',
                headers : {"Authorization" : "Bearer "+localStorage.getItem("Token")},
@@ -43,7 +37,8 @@ export default {
          })
          
   }          
-};
+}
+
 </script>
 <style>
 .article{

@@ -6,14 +6,12 @@ const con = require('../MysqlParam');
 const { error } = require('console');
 
 // création du message //
-exports.createPost = (req, res, next) =>{ 
-  let userId = JSON.parse(localStorage.getItem("userid"));
+exports.createPost = (req, res, next) =>{   
   let playload = {
     text : req.body.txt,
     url_image : `${req.protocol}://${req.get('host')}/image/`+req.file.filename,
-    id_user: userId
+    id_user : req.body.userId
   }
-  console.log(res.id_user);
  db.query (`INSERT INTO post SET ?`, playload, (err,rows)=>{
     if(err){
         return res.status(400).json({message : err.message})

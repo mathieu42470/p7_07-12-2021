@@ -29,7 +29,7 @@ export default {
                post: {
                      text:'',
                      file: '',
-                     userId: ''
+                     id_user: localStorage.getItem('userid')
                }
        }
   },
@@ -40,20 +40,19 @@ export default {
 
        onsubmit(e) {
       e.preventDefault();
-      console.log(this.post.id_user);
+
           let form = new FormData();
           form.append("image",this.post.file)
           form.append("txt", this.post.text)
-     
+          form.append("userId", this.post.id_user)
          fetch('http://localhost:3000/api/post',{
                 method : 'POST',
                 headers:{                   
                      "Authorization" : "Bearer "+localStorage.getItem("Token")},
                 body : form                
             }).then((data) => data.json()).then((result) =>{
-                let userId = JSON.parse(localStorage.getItem("userid"))
-                 this.$router.go()
-                 console.log(result, userId);
+                  this.$router.go()
+                 console.log(result);
          })            
          },
          
