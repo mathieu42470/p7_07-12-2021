@@ -39,8 +39,8 @@ export default {
                    body : JSON.stringify(this.user)
              })
              .then((data) => data.json()).then((result) =>{ 
-                   localStorage.setItem("userid", result.user)                
-                    localStorage.setItem("Token",result.token);
+                   sessionStorage.setItem("userid", result.user)                
+                    sessionStorage.setItem("Token",result.token);
                    this.$router.push("/about")      
             }) 
         }

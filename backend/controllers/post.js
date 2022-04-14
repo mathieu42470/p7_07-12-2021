@@ -22,7 +22,7 @@ exports.createPost = (req, res, next) =>{
 
 // récupération des messages pour la page d'accueil //
 exports.getAllPost = (req, res, next) =>{
-  db.query(`SELECT * FROM post`, (err, result, fields) =>{
+  db.query(`SELECT * FROM groupomania.post INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.post.id_user`, (err, result, fields) =>{
 if(err){
       return res.status(400).json({message: err.message})
     }

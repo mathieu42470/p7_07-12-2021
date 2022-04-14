@@ -29,7 +29,7 @@ export default {
                post: {
                      text:'',
                      file: '',
-                     id_user: localStorage.getItem('userid')
+                     id_user: sessionStorage.getItem('userid')
                }
        }
   },
@@ -48,7 +48,7 @@ export default {
          fetch('http://localhost:3000/api/post',{
                 method : 'POST',
                 headers:{                   
-                     "Authorization" : "Bearer "+localStorage.getItem("Token")},
+                     "Authorization" : "Bearer "+sessionStorage.getItem("Token")},
                 body : form                
             }).then((data) => data.json()).then((result) =>{
                   this.$router.go()

@@ -2,7 +2,8 @@
    <header>
      <img src="../../images/icon-left-font-monochrome-white.png" >
      <div>
-       <button > connexion </button>
+       <button v-if="sessionstorage =! null" > connexion </button>
+       <button v-else>deconnexion</button>
      </div>
    </header>
 </template>
@@ -12,7 +13,8 @@ export default {
   name: 'header',
   props: {
     msg: String
-  }
+  },
+  
 }
 
 
