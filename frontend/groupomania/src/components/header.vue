@@ -1,10 +1,12 @@
 <template>
    <header>
      <img src="../../images/icon-left-font-monochrome-white.png" >
-     <div>
-       <button v-if="sessionstorage =! null" > connexion </button>
+     <a v-on:click="accueil">
+
+       <p  v-if=" this.$route.name ==='home' "></p>
        <button v-else>deconnexion</button>
-     </div>
+      
+     </a>
    </header>
 </template>
 
@@ -12,9 +14,22 @@
 export default {
   name: 'header',
   props: {
+    isconnected : Boolean,
     msg: String
   },
+  mounted (){
+    console.log("je passe là")
+    console.log(this.$route.name)
+  },
   
+  methods:{
+    accueil(e){
+               e.preventDefault();
+                sessionStorage.clear();
+                this.isconnected = false;
+                this.$router.push('/');               
+         }
+  }
 }
 
 

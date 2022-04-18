@@ -1,21 +1,23 @@
 <template>
 <div class="page">
       <h1> messages postés</h1>
-     
-       <article v-for="(item) in messages" :key="item.id_post" class="article"  >
-             
-                   <div class="nom">
+    
+       <article v-for="(item) in messages" :key="item.id_post" class="article"> 
+             <a class="id" v-on:click="id"> 
+                  <div class="nom">
                      <p>{{item.lastname}} </p>
                       <p>{{item.firstname}}</p>
                    </div>
                    <div class="text">
                       <p>{{item.text}} </p>
                       <img :src="item.url_image" class="image">
-                   </div> 
-                   <div>
-                   <button class="like" @click="count++" v-on:click="onsubmit" value="envoyer" >j'aime</button>
-                   <p>{{count + like}}</p> 
-                   </div>                
+                   </div>
+                   </a>  
+                   <div class="like">
+                   <button @click.prevent="likePost($event, item.id_post)" value="envoyer" >j'aime</button>
+                   <p>{{item.number_like }}</p> 
+                   </div>
+                                 
       </article>  
 </div>                     
 </template>
@@ -29,31 +31,45 @@ export default {
   data() {
         return{
               messages:null,
-              count : 0,
-              like: ''
+              numbers_like: '',
+              id_user: sessionStorage.getItem("userid"),
+              like:0
   }
   },
-  created()  {              
+  created()  {             
       fetch('http://localhost:3000/api/post/',{
                method : 'GET',
-               headers : {"Authorization" : "Bearer "+sessionStorage.getItem("Token")},
-         })          
+               headers : {"Content-Type":"application/json", "Authorization" : "Bearer "+sessionStorage.getItem("Token")},
+         })         
          .then(res => res.json())
                .then(resJson => {
                  this.messages = resJson.message 
               })
          },
  methods :{
-    onsubmit(e){
+    likePost(e, id_Post){
         e.preventDefault();
-        console.log('je suis la', this.like);
+        this.messages.find(x => x.id_post == id_Post).number_like ++;
+      //   let idPost = this.messages.number_like ++
+       let like = [
+         id_Post,
+         this.id_user,
+         this.messages.find(x => x.id_post == id_Post).number_like
+     ]
+       //console.log('je suis la', like);
         fetch('http://localhost:3000/api/post/like', {
               method : 'POST',
-              headers : {"Content-Type":"application/json", "Authorization": "Bearer"+ sessionStorage.getItem("token")},
-              body : JSON.stringify(this.like) 
+              headers : {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
+              body : JSON.stringify(like) 
         }).then((data) => data.json()).then((result) =>{
                  console.log(result);  
         })
+         },
+
+
+         id(e){
+               e.preventDefault();
+               this.$router.push("/about/id")
          }
  }  
   }          
@@ -102,8 +118,14 @@ export default {
 .like 
 {
       display: flex;
-      width: 50px;
+      width: 100%;
       height: 20px;
       margin: 3%;
+      flex-direction: row;
+      justify-content: space-around;
+}
+.id{
+      width: 100%;
+      cursor: pointer;
 }
 </style>

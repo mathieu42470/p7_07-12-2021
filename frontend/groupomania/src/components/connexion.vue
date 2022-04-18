@@ -20,7 +20,8 @@
 export default {
   name: 'connexion',
   props: {
-  msg: String      
+  msg: String,
+  isconnected:Boolean      
   },
   data() {
       return {
@@ -41,6 +42,7 @@ export default {
              .then((data) => data.json()).then((result) =>{ 
                    sessionStorage.setItem("userid", result.user)                
                     sessionStorage.setItem("Token",result.token);
+                    //this.$emit('changeIsconnected',true)
                    this.$router.push("/about")      
             }) 
         }

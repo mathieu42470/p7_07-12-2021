@@ -123,7 +123,6 @@ exports.likePost = (req, res, next) =>{
                   if(err){
                   return res.status(400).json({message : err.message})
                 }else{
-                 
                   db.query(`UPDATE Post SET likes= likes + 1 WHERE id_post= ?`,[req.body.id_post], (err, result) =>{
                                         if(err){
                       return res.status(400).json({message : err.message})

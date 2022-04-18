@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <Header/>
+    <Header :isconnected='isconnected' />
    <div class="formulaire">
      <Form/>
-     <Connexion/>
+     <Connexion :isconnected='isconnected'/>
     </div>
     <Footer/>
   </div>
@@ -20,7 +20,18 @@ export default {
   name: 'HomeView',
   components: {
     Header, Form, Connexion, Footer
+  },
+  data(){
+    return {
+    isconnected : true
+    }
+  },
+  methods:{
+    changeIsConnected(pisconnected){
+      this.isconnected = pisconnected
+    }
   }
+ 
 }
 </script>
 <style >
