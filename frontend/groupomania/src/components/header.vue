@@ -18,7 +18,6 @@ export default {
     msg: String
   },
   mounted (){
-    console.log("je passe là")
     console.log(this.$route.name)
   },
   

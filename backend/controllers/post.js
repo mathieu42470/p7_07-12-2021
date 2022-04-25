@@ -22,7 +22,7 @@ exports.createPost = (req, res, next) =>{
 
 // récupération des messages pour la page d'accueil //
 exports.getAllPost = (req, res, next) =>{
-  db.query(`SELECT * FROM groupomania.post INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.post.id_user`, (err, result, fields) =>{
+  db.query(`SELECT text, url_image, firstname, lastname, nblike, id_post FROM groupomania.post INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.post.id_user`, (err, result, fields) =>{
 if(err){
       return res.status(400).json({message: err.message})
     }
@@ -31,20 +31,23 @@ if(err){
 };
 
 // récupération d'un message en particulier //
-exports.getOnepost = (req, res, next) =>{
-                if(req.params.id){
-               db.query(`SELECT text FROM groupomania.post WHERE id_post= ? ;`, req.params.id,(err, result) =>{
+exports.getOnepost = (req, res, next) =>{ 
+           console.log(req.body);
+                if(req.params.id_post){             
+              db.query(`SELECT * FROM groupomania.post INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.post.id_user WHERE id_post= ?;`, req.params.id_post,(err, result) =>{
                  if(err){
                   return res.status(500).json({message : err.message})
-                } else{
-                  var row ='';
-                  Object.keys(result).forEach(function(key) {
-                     row = result[key];       
-                  });
-                 if(err){
-                  return res.status(500).json({message : err.message})
-                 }
-                 return res.status(200).json({message : result})
+                 } else{ 
+                      
+                  var row = '';
+                  Object.keys(result).forEach((key) => {
+                     row = result;                        
+                  });                 
+                  if(err){
+                    return res.status(500).json({message : err.message})
+                   }else{    
+                     return res.status(200).json({message : result})
+                    }
                }
               })
             }else{
@@ -54,7 +57,7 @@ exports.getOnepost = (req, res, next) =>{
 
 // modification d'un message //
 exports.modifyPost = (req, res, next) =>{
-  db.query(`UPDATE post SET text = ? WHERE id_post= ? AND id_utilisateur= ?`, [req.body.text,req.body.id_post,req.body.id_utilisateur],(err, result) =>{
+  db.query(`UPDATE post SET text = ? WHERE id_post= ? AND id_user= ?`, [req.body.text,req.body.id_post,req.body.id_user],(err, result) =>{
     if(err){
       return res.status(400).json({message : err.message})
     }
@@ -74,30 +77,24 @@ exports.deletePost = (req, res, next) => {
 
 // like du message //
 exports.likePost = (req, res, next) =>{
-  
-  
-    switch(req.body.like){
+    switch(req.body.nblike){
       // message non like
       case 0:
+        console.log("ici");
         db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
-          if(err){
-            
+         if(err){            
             return res.status(400).json({message : err.message})
           }
           if(result){
             db.query(`DELETE FROM groupomania.like WHERE id_user= ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
-
               if(err){
                 return res.status(400).json({message : err.message})
-              }else{
-                
-                let nblikes = req.body.nblikes;
-                db.query(`UPDATE Post SET likes= likes - 1 WHERE id_post= ?`,[req.body.id_post], (err, result) =>{
-                  
+              }else{              
+                db.query(`UPDATE post SET nblike = nblike - 1 WHERE id_post= ?`,[req.body.id_post], (err, result) =>{
                   if(err){
                     return res.status(400).json({message : err.message})
                   }else{
-                    return res.status(200).json({message : "Vous n'aimez plus le post"})
+                     return res.status(200).json({message : "Vous n'aimez plus le post"})
                   }               
                 });
               }
@@ -109,22 +106,21 @@ exports.likePost = (req, res, next) =>{
         
         break;
          // message liké //
-        case 1:         
+        
+        case 1: 
           db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
             if(err){
-              
               return res.status(400).json({message : err.message})
             }
-            if(result.length > 0){
-              console.log(result)
+            if(result.length > 0){      
               return res.status(200).json({message : "Tu aimes déjà"})
             }else{
               db.query(`INSERT INTO groupomania.like SET ?`,{id_user : req.body.id_user, id_post : req.body.id_post}, (err, result) =>{
                   if(err){
                   return res.status(400).json({message : err.message})
                 }else{
-                  db.query(`UPDATE Post SET likes= likes + 1 WHERE id_post= ?`,[req.body.id_post], (err, result) =>{
-                                        if(err){
+                    db.query(`UPDATE post SET nblike = nblike + 1 WHERE id_post= ?`,[req.body.id_post], (err, result) =>{
+                    if(err){
                       return res.status(400).json({message : err.message})
                     }else{
                       return res.status(200).json({message : "Vous aimez le post"})

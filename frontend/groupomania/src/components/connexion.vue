@@ -41,8 +41,7 @@ export default {
              })
              .then((data) => data.json()).then((result) =>{ 
                    sessionStorage.setItem("userid", result.user)                
-                    sessionStorage.setItem("Token",result.token);
-                    //this.$emit('changeIsconnected',true)
+                    sessionStorage.setItem("Token",result.token)
                    this.$router.push("/about")      
             }) 
         }

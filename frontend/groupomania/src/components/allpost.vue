@@ -1,28 +1,26 @@
 <template>
-<div class="page">
-      <h1> messages postés</h1>
-    
-       <article v-for="(item) in messages" :key="item.id_post" class="article"> 
-             <a class="id" v-on:click="id"> 
-                  <div class="nom">
+<div class="pages">
+      <h1> messages postés</h1>    
+       <article v-for="(item) in messages" :key="item.id_post" class="articles"> 
+             <a class="ids" @click.prevent="id($event, item.id_post)"> 
+                  <div class="noms">
                      <p>{{item.lastname}} </p>
                       <p>{{item.firstname}}</p>
                    </div>
-                   <div class="text">
+                   <div class="texts">
                       <p>{{item.text}} </p>
-                      <img :src="item.url_image" class="image">
+                      <img :src="item.url_image" class="images">
                    </div>
                    </a>  
-                   <div class="like">
+                   <div class="likes">
                    <button @click.prevent="likePost($event, item.id_post)" value="envoyer" >j'aime</button>
-                   <p>{{item.number_like }}</p> 
+                   <p>{{item.nblike}}</p> 
                    </div>
                                  
       </article>  
 </div>                     
 </template>
 <script>
-// import axios from 'axios';
 export default {
      name : 'allPost',
      props : {
@@ -31,9 +29,8 @@ export default {
   data() {
         return{
               messages:null,
-              numbers_like: '',
               id_user: sessionStorage.getItem("userid"),
-              like:0
+              nblike:0
   }
   },
   created()  {             
@@ -47,29 +44,29 @@ export default {
               })
          },
  methods :{
-    likePost(e, id_Post){
+    likePost(e, id_post){
         e.preventDefault();
-        this.messages.find(x => x.id_post == id_Post).number_like ++;
-      //   let idPost = this.messages.number_like ++
-       let like = [
-         id_Post,
-         this.id_user,
-         this.messages.find(x => x.id_post == id_Post).number_like
-     ]
-       //console.log('je suis la', like);
+        this.messages.find(x => x.id_post == id_post).nblike ++;
+       let like = {
+         id_post: id_post,
+         id_user: this.id_user,
+        nblike: this.messages.find(x => x.id_post == id_post).nblike
+     }
         fetch('http://localhost:3000/api/post/like', {
               method : 'POST',
               headers : {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
-              body : JSON.stringify(like) 
+              body : JSON.stringify(like)
         }).then((data) => data.json()).then((result) =>{
                  console.log(result);  
         })
          },
 
 
-         id(e){
+         id(e, id_post){
                e.preventDefault();
-               this.$router.push("/about/id")
+               this.messages.find(x => x.id_post == id_post)
+               var idpost = id_post
+              this.$router.push("/about/"+ idpost)
          }
  }  
   }          
@@ -77,14 +74,14 @@ export default {
 
 </script>
 <style>
-.page{
+.pages{
       width: 100%;
       height: 100%;
       border: grey;
 }
-.article{
+.articles{
       width: 90%;
-      height: 10%;
+      height: 25rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -94,7 +91,7 @@ export default {
       background-color: rgb(195, 187, 187);
       border-radius: 20px 20px 20px 20px;
 }
-.nom{
+.noms{
       width: 100%;
       display: flex;
       flex-direction: row;
@@ -102,7 +99,7 @@ export default {
       border-bottom: solid ;
       margin: 3%;
 }
-.text{
+.texts{
       display: flex;
       width: 100;
       flex-direction: row;
@@ -110,13 +107,11 @@ export default {
       margin: 3%;
       
 }
-.image{
-      object-fit: cover;
-      height: 50%;
-      width: 50%;
+.images{
+      height: 20%;
+      width: 10%;
 }
-.like 
-{
+.likes{
       display: flex;
       width: 100%;
       height: 20px;
@@ -124,7 +119,7 @@ export default {
       flex-direction: row;
       justify-content: space-around;
 }
-.id{
+.ids{
       width: 100%;
       cursor: pointer;
 }
