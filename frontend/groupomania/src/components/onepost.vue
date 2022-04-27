@@ -1,25 +1,20 @@
 <template>
 <div class="page">
      <h1 class="titre"> message posté </h1>
-     <article  class="article">
+     <article class="article">
          <div class="name">
-            <!-- <p>{{message.firstname}}</p>
-            <p>{{message.lastname}}</p> -->
+            <p>{{message.firstname}}</p>
+            <p>{{message.lastname}}</p>
          </div>
          <div class="text">
-           <!-- <p>{{message.text}}</p>
-           <img class="image" :src="message.url_image"> -->
+           <p>{{message.text}}</p>
+           <img class="image" :src="message.url_image">
             </div> 
            <div class="like">
-           <!-- <button @click.prevent="likePost($event, item.id_post)" value="envoyer" >j'aime</button> 
-             <p>{{message.nblike}}</p> -->
-           </div>
-        
-        </article>
-        <div class="comment">
-          <!-- <p>{{message.comment}}</p> -->
-         </div>
-    
+           <button @click.prevent="likPost($event, message.id_post)" value="envoyer" >j'aime</button> 
+             <p>{{message.nblike}}</p>
+           </div>        
+        </article>    
 </div>  
 </template>
 <script>
@@ -31,18 +26,37 @@ export default {
   data(){
     return{
       message: null,
+      id_user: sessionStorage.getItem('userid'),
+      nblike: 0
     }
   },
-  created() {  
-    fetch('http://localhost:3000/api/post/:id_post', {
+  created() {       
+    fetch('http://localhost:3000/api/post/'+this.$route.query.idpost, {
       method : 'GET',
        headers : {"Content-Type": "application/json", "Authorization": "Bearer "+sessionStorage.getItem('Token')},
     })
     .then(response => response.json())
-    .then(resJson =>{
-      this.messages = resJson.message
-      console.log(this.messages);
+    .then(resJson =>{      
+      this.message = resJson.message[0];     
     })    
+  },
+  methods : {
+     likPost(e, id_post){
+        e.preventDefault();     
+        this.message.nblike ++;
+       let like = {
+         id_post: id_post,
+         id_user: this.id_user,
+         nblike: this.message.nblike
+     }
+        fetch('http://localhost:3000/api/post/like', {
+              method : 'POST',
+              headers : {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
+              body : JSON.stringify(like)
+        }).then((data) => data.json()).then((result) =>{
+                 console.log(result);  
+        })
+         }
   }
 }
 </script>
@@ -75,9 +89,6 @@ export default {
   height: 20%;
    width: 10%;
    object-fit: cover;
-}
-.comment{
-  display: flex;
 }
 </style>
 

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+// import { component } from 'vue/types/umd'
 import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
@@ -16,7 +17,7 @@ const routes = [
     component: () => import('../views/AboutView.vue')    
   },
   {
-    path: '/about/:id_post',
+    path: '/onePost',
     name: 'id',
     component: () => import('../views/IdView.vue')
   },

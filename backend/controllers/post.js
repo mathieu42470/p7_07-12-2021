@@ -32,7 +32,6 @@ if(err){
 
 // récupération d'un message en particulier //
 exports.getOnepost = (req, res, next) =>{ 
-           console.log(req.body);
                 if(req.params.id_post){             
               db.query(`SELECT * FROM groupomania.post INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.post.id_user WHERE id_post= ?;`, req.params.id_post,(err, result) =>{
                  if(err){
@@ -77,12 +76,11 @@ exports.deletePost = (req, res, next) => {
 
 // like du message //
 exports.likePost = (req, res, next) =>{
-    switch(req.body.nblike){
+    switch(req.body.like){
       // message non like
-      case 0:
-        console.log("ici");
+      case 0:       
         db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
-         if(err){            
+          if(err){            
             return res.status(400).json({message : err.message})
           }
           if(result){
@@ -103,10 +101,9 @@ exports.likePost = (req, res, next) =>{
             return res.status(200).json({message : "Tu aimes déjà"})
           }
         });
-        
-        break;
+               
+        break
          // message liké //
-        
         case 1: 
           db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
             if(err){
@@ -127,10 +124,9 @@ exports.likePost = (req, res, next) =>{
                     }                   
                   });
                 }
-  
               })
-            }  
+            }
           });
-                break;
-      }
-   }
+              break;
+      };
+    }

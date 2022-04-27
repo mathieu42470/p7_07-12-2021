@@ -65,8 +65,9 @@ export default {
          id(e, id_post){
                e.preventDefault();
                this.messages.find(x => x.id_post == id_post)
-               var idpost = id_post
-              this.$router.push("/about/"+ idpost)
+               sessionStorage.setItem("id_post", id_post) 
+              this.$router.push('/onePost?idpost='+id_post)
+
          }
  }  
   }          
