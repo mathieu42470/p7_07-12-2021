@@ -32,7 +32,7 @@ data(){
                           id_user: sessionStorage.getItem('userid'),
                           id_post: sessionStorage.getItem('id_post'), 
                       },
-                      item: null        
+                      messages: null        
                }
 },
 
@@ -43,8 +43,8 @@ data(){
     })
     .then(res => res.json())
     .then(responseJson =>{
-      this.item = responseJson
-      console.log(this.item.text)
+      this.messages = responseJson
+      console.log(responseJson)
     })
   },
   methods:{
@@ -71,5 +71,13 @@ data(){
   .comment{
   display: flex;
   background-color: white;
+}
+.createcomment{
+  display: flex;
+  flex-direction: column;
+}
+.button{
+  display: flex;
+  align-content: center;
 }
   </style>

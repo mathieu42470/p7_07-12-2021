@@ -20,7 +20,7 @@ exports.createComment = (req, res, next) =>{
 // récupération de tous les commentaires //
 exports.getAllComment = (req, res, next)=>{
  
-  db.query(`SELECT * FROM groupomania.commentaire`, (err, result, fields) =>{
+  db.query(`SELECT firstname, lastname, text, id_post, id_comment FROM groupomania.commentaire INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.commentaire.id_user`, (err, result, fields) =>{
     if(err){
           return res.status(400).json({message: err.message})
         }else{

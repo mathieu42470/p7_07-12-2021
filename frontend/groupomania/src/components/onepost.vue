@@ -13,7 +13,11 @@
            <div class="like">
            <button @click.prevent="likPost($event, message.id_post)" value="envoyer" >j'aime</button> 
              <p>{{message.nblike}}</p>
-           </div>        
+           </div> 
+           <div>
+              <button v-if="message.id_user == id_user">modifier mon post</button> 
+             <p v-else></p>
+           </div>       
         </article>    
 </div>  
 </template>
@@ -27,6 +31,7 @@ export default {
     return{
       message: null,
       id_user: sessionStorage.getItem('userid'),
+      id_post: sessionStorage.getItem('id_post'),
       nblike: 0
     }
   },
