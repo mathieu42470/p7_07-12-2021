@@ -19,8 +19,8 @@ exports.createComment = (req, res, next) =>{
 
 // récupération de tous les commentaires //
 exports.getAllComment = (req, res, next)=>{
- 
-  db.query(`SELECT firstname, lastname, text, id_post, id_comment FROM groupomania.commentaire INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.commentaire.id_user`, (err, result, fields) =>{
+ if(req.params.id){ 
+   db.query(`SELECT firstname, lastname, id_post, text FROM groupomania.commentaire INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.commentaire.id_user WHERE id_post= ?;`, req.params.id, (err, result, fields) =>{
     if(err){
           return res.status(400).json({message: err.message})
         }else{
@@ -28,7 +28,10 @@ exports.getAllComment = (req, res, next)=>{
         return res.status(200).json({message : result})
          }
          
-      })  
+      })
+     } else{
+       return res.status(400).json({message: "pas de id post"})
+     }
 };
 
 // récupération d'un commentaire en particulier //

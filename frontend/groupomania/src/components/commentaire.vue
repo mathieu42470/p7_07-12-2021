@@ -13,7 +13,8 @@
        <h2> Commentaires postés</h2>
           <article v-for="(item) in messages" :key="item.id_comment" class="comment">
            <div>
-          <p>{{item.text}}</p>
+             <p class="nomprenom">{{item.firstname}}, {{item.lastname}}</p>
+             <p>{{item.text}}</p>
            </div>
           </article> 
   </div>   
@@ -32,19 +33,18 @@ data(){
                           id_user: sessionStorage.getItem('userid'),
                           id_post: sessionStorage.getItem('id_post'), 
                       },
-                      messages: null        
+                      messages:null        
                }
 },
 
  created(){
-    fetch('http://localhost:3000/api/commentaire/', {
+    fetch('http://localhost:3000/api/commentaire/'+this.$route.query.idpost, {
       method : 'GET',
       headers: {"Content-Type": "application/json", "Authorization": "Bearer "+sessionStorage.getItem('Token')},
     })
     .then(res => res.json())
     .then(responseJson =>{
-      this.messages = responseJson
-      console.log(responseJson)
+      this.messages = responseJson.message
     })
   },
   methods:{
@@ -70,7 +70,19 @@ data(){
   <style>
   .comment{
   display: flex;
+  flex-direction: column;
   background-color: white;
+  border: solid black;
+  margin: auto;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  width: 50%;
+  justify-content: center;
+}
+.nomprenom{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 .createcomment{
   display: flex;
@@ -78,6 +90,7 @@ data(){
 }
 .button{
   display: flex;
-  align-content: center;
+  text-align: center;
+  margin: auto;
 }
   </style>

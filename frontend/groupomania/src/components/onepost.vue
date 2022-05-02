@@ -13,12 +13,23 @@
            <div class="like">
            <button @click.prevent="likPost($event, message.id_post)" value="envoyer" >j'aime</button> 
              <p>{{message.nblike}}</p>
-           </div> 
-           <div>
-              <button v-if="message.id_user == id_user">modifier mon post</button> 
+           </div>                  
+        </article>
+        <div >
+             <div v-if="message.id_user == id_user" class="modifier">
+               <h1>modifier son post</h1>
+               <div class="textmo">
+                 <label for="text">texte: </label>         
+                 <textarea name="text" placeholder="mon post" v-model="post.texte"/>
+               </div>
+               <div class="textmo">
+                   <label for="image">url image: </label>         
+                   <input  type="file" name="image" v-on:change="previewFile" /> 
+               </div>
+             <input v-on:click="onsubmits" class="but" type="button" value='modifier le post'/>
+             </div>
              <p v-else></p>
-           </div>       
-        </article>    
+           </div>     
 </div>  
 </template>
 <script>
@@ -32,8 +43,13 @@ export default {
       message: null,
       id_user: sessionStorage.getItem('userid'),
       id_post: sessionStorage.getItem('id_post'),
-      nblike: 0
+      nblike: 0,
+      post:{
+          texte:'',
+          file:''
+      }
     }
+
   },
   created() {       
     fetch('http://localhost:3000/api/post/'+this.$route.query.idpost, {
@@ -42,7 +58,7 @@ export default {
     })
     .then(response => response.json())
     .then(resJson =>{      
-      this.message = resJson.message[0];     
+      this.message = resJson.message[0];   
     })    
   },
   methods : {
@@ -61,7 +77,26 @@ export default {
         }).then((data) => data.json()).then((result) =>{
                  console.log(result);  
         })
-         }
+         },
+          previewFile(e){             
+          this.post.file = e.target.files[0];  
+         },
+         onsubmits(e){
+           e.preventDefault();
+           let forms = new FormData();
+           forms.append("image", this.post.file)
+           forms.append('text', this.post.texte)
+           forms.append('id_user', this.id_user)
+           forms.append('id_post', this.id_post)
+           fetch('http://localhost:3000/api/post',{
+             method: 'PUT',
+             headers: {"Authorization": "Bearer "+ sessionStorage.getItem("Token")},
+             body: forms
+           }).then((data) => data.json()).then((result) =>{
+                  //  this.$router.go()
+                  console.log(result)
+           })
+         },
   }
 }
 </script>
@@ -73,7 +108,7 @@ export default {
 }
 .article{
   width: 90%;
-  height: 100%;
+  height: 80%;
   background-color: coral;
   height: 25rem;
   display: flex;
@@ -94,6 +129,27 @@ export default {
   height: 20%;
    width: 10%;
    object-fit: cover;
+}
+.modifier{
+  height: 25%;
+  width: 100%;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column ;
+  border: solid black;
+  justify-content: center;
+}
+.textmo{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.but{
+  width: 10%;
+  text-align: center;
+  display: flex;
+  text-align: center;
+  margin: auto;
 }
 </style>
 

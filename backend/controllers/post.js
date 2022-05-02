@@ -55,8 +55,8 @@ exports.getOnepost = (req, res, next) =>{
    };
 
 // modification d'un message //
-exports.modifyPost = (req, res, next) =>{
-  db.query(`UPDATE post SET text = ? WHERE id_post= ? AND id_user= ?`, [req.body.text,req.body.id_post,req.body.id_user],(err, result) =>{
+exports.modifyPost = (req, res, next) =>{  
+  db.query(`UPDATE post SET text = ?, url_image = ? WHERE id_post= ? AND id_user= ?`, [req.body.text,req.body.id_post,`${req.protocol}://${req.get('host')}/image/`+req.file.filename,req.body.id_user],(err, result) =>{
     if(err){
       return res.status(400).json({message : err.message})
     }
