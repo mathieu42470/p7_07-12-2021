@@ -95,6 +95,10 @@ export default {
            }).then((data) => data.json()).then((result) =>{
                   //  this.$router.go()
                   console.log(result)
+                  this.message = result
+                  // this.message.url_image = this.post.file;
+                  // this.message.text = this.post.texte;
+                
            })
          },
   }

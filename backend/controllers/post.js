@@ -56,11 +56,19 @@ exports.getOnepost = (req, res, next) =>{
 
 // modification d'un message //
 exports.modifyPost = (req, res, next) =>{  
-  db.query(`UPDATE post SET text = ?, url_image = ? WHERE id_post= ? AND id_user= ?`, [req.body.text,req.body.id_post,`${req.protocol}://${req.get('host')}/image/`+req.file.filename,req.body.id_user],(err, result) =>{
+  console.log(req.body)
+
+  db.query(`UPDATE post SET text = ?, url_image = ? WHERE id_post= ? AND id_user= ?`, [req.body.text,`${req.protocol}://${req.get('host')}/image/`+req.file.filename,req.body.id_post,req.body.id_user],(err, result) =>{
     if(err){
       return res.status(400).json({message : err.message})
     }
-    return res.status(200).json({message : "post modifié"})
+    let postUpdated = null;
+    db.query(`SELECT * FROM groupomania.post INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.post.id_user WHERE id_post= ?;`, req.body.id_post,(err, result) =>{
+                 
+      return res.status(200).json(result[0])
+    });
+
+    
   })
 }
 

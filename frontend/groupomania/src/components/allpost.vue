@@ -16,11 +16,19 @@
                    <button @click.prevent="likePost($event, item.id_post)" value="envoyer" >j'aime</button>
                    <p>{{item.nblike}}</p> 
                    </div>
+                   <div v-if="type_user === 1">                    
+                   <p>ici {{type_user}}</p>
+                   </div>
+                   <div v-else>
+                         <p>{{type_user}}<p/>
+                   </div>
+                   
                                  
       </article>  
 </div>                     
 </template>
 <script>
+//  src="https://kit.fontawesome.com/76224e3b6e.js" 
 export default {
      name : 'allPost',
      props : {
@@ -29,6 +37,7 @@ export default {
   data() {
         return{
               messages:null,
+              type_user: sessionStorage.getItem("type_user"),
               id_user: sessionStorage.getItem("userid"),
               nblike:0
   }
