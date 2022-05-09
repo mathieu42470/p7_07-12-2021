@@ -87,6 +87,11 @@ data(){
 .createcomment{
   display: flex;
   flex-direction: column;
+  border: solid black;
+  border-radius: 20px;
+}
+.texte{
+  width: 90%;
 }
 .button{
   display: flex;

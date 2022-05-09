@@ -28,7 +28,7 @@
                </div>
              <input v-on:click="onsubmits" class="but" type="button" value='modifier le post'/>
              </div>
-             <p v-else></p>
+             <p class="else1" v-else></p>
            </div>     
 </div>  
 </template>
@@ -154,6 +154,9 @@ export default {
   display: flex;
   text-align: center;
   margin: auto;
+}
+.else1{
+  height: 0%;
 }
 </style>
 

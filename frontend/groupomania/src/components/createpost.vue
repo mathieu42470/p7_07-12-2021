@@ -69,4 +69,10 @@ export default {
     width: 100%;
     margin: 5%;
 }
+.form1{
+     border: solid black;
+     border-radius: 20px;
+     width: 90%;
+     margin: 0 5% 0 5%;
+}
 </style>

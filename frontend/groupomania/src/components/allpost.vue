@@ -16,11 +16,11 @@
                    <button @click.prevent="likePost($event, item.id_post)" value="envoyer" >j'aime</button>
                    <p>{{item.nblike}}</p> 
                    </div>
-                   <div v-if="type_user === 1">                    
-                   <p>ici {{type_user}}</p>
+                   <div>
+                   <div v-if="type_user > user" @click.prevent="suppression($event, item.id_post)" >                    
+                   <button>suppression</button>
                    </div>
-                   <div v-else>
-                         <p>{{type_user}}<p/>
+                         <p class="else" v-else><p/>
                    </div>
                    
                                  
@@ -28,7 +28,6 @@
 </div>                     
 </template>
 <script>
-//  src="https://kit.fontawesome.com/76224e3b6e.js" 
 export default {
      name : 'allPost',
      props : {
@@ -37,9 +36,10 @@ export default {
   data() {
         return{
               messages:null,
-              type_user: sessionStorage.getItem("type_user"),
+              type_user: sessionStorage.getItem("user_type"),
               id_user: sessionStorage.getItem("userid"),
-              nblike:0
+              nblike:0,
+              user:0
   }
   },
   created()  {             
@@ -61,6 +61,7 @@ export default {
          id_user: this.id_user,
         nblike: this.messages.find(x => x.id_post == id_post).nblike
      }
+     console.log(like)
         fetch('http://localhost:3000/api/post/like', {
               method : 'POST',
               headers : {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
@@ -77,6 +78,17 @@ export default {
                sessionStorage.setItem("id_post", id_post) 
               this.$router.push('/onePost?idpost='+id_post)
 
+         },
+         suppression(e, id_post){
+               e.preventDefault();
+               console.log(id_post)
+                this.messages.find(x => x.id_post == id_post)
+               fetch('http://localhost:3000/api/post/'+id_post, {
+                    method: 'DELETE',
+                    headers: {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
+                  }).then((data )=> data.json()).then((result)=>{
+                     console.log(result)
+               })
          }
  }  
   }          
@@ -132,5 +144,8 @@ export default {
 .ids{
       width: 100%;
       cursor: pointer;
+}
+.else{
+      height: 0%;
 }
 </style>

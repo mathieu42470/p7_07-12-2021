@@ -74,6 +74,7 @@ exports.modifyPost = (req, res, next) =>{
 
 // suppression du message publié //
 exports.deletePost = (req, res, next) => {
+  console.log(req.params);
  db.query(`DELETE FROM post WHERE id_post =?;` ,req.params.id_post,(err, result)=>{
   if(err){
     return res.status(400).json({message : err.message})
@@ -84,19 +85,20 @@ exports.deletePost = (req, res, next) => {
 
 // like du message //
 exports.likePost = (req, res, next) =>{
-    switch(req.body.like){
+    switch(req.body.nblikes){      
       // message non like
-      case 0:       
-        db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
+      case 0:  
+      console.log('la');   
+        db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user,  req.body.id_post], (err, result) =>{
           if(err){            
             return res.status(400).json({message : err.message})
           }
           if(result){
-            db.query(`DELETE FROM groupomania.like WHERE id_user= ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
+            db.query(`DELETE FROM groupomania.like WHERE id_user= ? AND id_post= ?`,[req.body.id_user,  req.body.id_post  ], (err, result) =>{
               if(err){
                 return res.status(400).json({message : err.message})
               }else{              
-                db.query(`UPDATE post SET nblike = nblike - 1 WHERE id_post= ?`,[req.body.id_post], (err, result) =>{
+                db.query(`UPDATE post SET nblike = nblike - 1 WHERE id_post= ?`,[req.body.id_user,  req.body.id_post ], (err, result) =>{
                   if(err){
                     return res.status(400).json({message : err.message})
                   }else{
@@ -110,10 +112,11 @@ exports.likePost = (req, res, next) =>{
           }
         });
                
-        break
+        break;
          // message liké //
-        case 1: 
-          db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user, req.body.id_post], (err, result) =>{
+          case 1:  
+          console.log('ici', req.body.id_user);
+          db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user, req.body.id_post ], (err, result) =>{
             if(err){
               return res.status(400).json({message : err.message})
             }
