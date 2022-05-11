@@ -1,8 +1,9 @@
 <template>
    <header>
+     <!-- header de toutes les pages du site -->
      <img src="../../images/icon-left-font-monochrome-white.png" >
-     <a v-on:click="accueil">
-
+     <!-- bouton qui permet la deconnexion et le retour à la premiere page -->
+     <a v-on:click="accueil">         
        <p  v-if=" this.$route.name ==='home' "></p>
        <button v-else>deconnexion</button>
       
@@ -22,6 +23,7 @@ export default {
   },
   
   methods:{
+    // effacement des données dans la session storage et retour à la page d'accueil //
     accueil(e){
                e.preventDefault();
                 sessionStorage.clear();

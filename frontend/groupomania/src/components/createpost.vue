@@ -1,15 +1,16 @@
 <template>
       <div>
       <div class="post"> 
-          <h1 class="titre">nouveau post</h1>           
-          <form method="post" class="form1" name="create">
-               <div>
-                <label for="text">texte: </label>         
-                <textarea class="texte"  name="text" placeholder="mon post"  v-model="post.text"/>
+          <h1 class="titre">nouveau post</h1>  
+                   <!-- formulaire pour écrire un nouveau post  -->
+          <form method="post" class="form2" name="create">
+               <div class="formtexte">
+                <label  for="text">texte: </label>         
+                <textarea  name="text" placeholder="mon post"  v-model="post.text"/>
                </div>
-                <div>
+                <div class="formtexte">
                     <label for="image">url image: </label>         
-                    <input class="texte" type="file" name="image" v-on:change="previewFile" />  
+                    <input type="file" name="image" v-on:change="previewFile" />  
                 </div>
                 <div>           
                     <input v-on:click="onsubmit" class="button" type="button" value='envoyer'/>
@@ -34,10 +35,11 @@ export default {
        }
   },
   methods:{
+     // changement des fichiers pour pouvoir être envoyé //
      previewFile(e){             
           this.post.file = e.target.files[0];  
          },
-
+          // envoie du formulaire à la base de données //
        onsubmit(e) {
       e.preventDefault();
 
@@ -51,6 +53,7 @@ export default {
                      "Authorization" : "Bearer "+sessionStorage.getItem("Token")},
                 body : form                
             }).then((data) => data.json()).then((result) =>{
+               // rechargement de la page avec le nouveau post crée //
                   this.$router.go()
                   console.log(result)
          })            
@@ -63,16 +66,22 @@ export default {
 <style>
 .post{
      width: 100%;
-     height: 15rem;
+     height: 17rem;
 }
-.texte {
-    width: 100%;
-    margin: 5%;
+.form2{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2%;
+      border: solid black;
+      border-radius: 20px;
+      width: 90%;
 }
-.form1{
-     border: solid black;
-     border-radius: 20px;
-     width: 90%;
-     margin: 0 5% 0 5%;
+.formtexte{
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     width: 50%;
+     margin: 2%;
 }
 </style>

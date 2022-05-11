@@ -13,7 +13,7 @@
                    </div>
                    </a>  
                    <div class="likes">
-                   <button @click.prevent="likePost($event, item.id_post)" value="envoyer" >j'aime</button>
+                   <button @click.prevent="likePost($event, item.id_post)" value="envoyer" >{{item.password}}</button>
                    <p>{{item.nblike}}</p> 
                    </div>
                    <div>
@@ -49,16 +49,36 @@ export default {
          })         
          .then(res => res.json())
                .then(resJson => {
-                 this.messages = resJson.message 
+                 this.messages = resJson.message;      
+                  fetch('http://localhost:3000/api/post/like/'+sessionStorage.getItem("userid"),{
+            method : 'GET',
+            headers : {"Content-Type":"application/json", 
+            "Authorization" : "Bearer "+sessionStorage.getItem("Token")},
+      })         
+      .then(res => res.json())
+            .then(resJson => {
+                  console.log(resJson)
+
+            resJson.message.map((like)=>{
+                  console.log(this.messages.indexOf(this.messages.find(x => x.id_post == like.id_post)))
+                  console.log(this.messages[this.messages.indexOf(this.messages.find(x => x.id_post == like.id_post))])
+                  this.messages[this.messages.indexOf(this.messages.find(x => x.id_post == like.id_post))].password = 1
+            })
+
+            
+            })         
+
               })
+     
          },
  methods :{
     likePost(e, id_post){
         e.preventDefault();
-        this.messages.find(x => x.id_post == id_post).nblike ++;
+        
        let like = {
          id_post: id_post,
          id_user: this.id_user,
+         etat : 1,
         nblike: this.messages.find(x => x.id_post == id_post).nblike
      }
      console.log(like)
@@ -67,7 +87,10 @@ export default {
               headers : {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
               body : JSON.stringify(like)
         }).then((data) => data.json()).then((result) =>{
-                 console.log(result);  
+                if(result.code == 1){
+                       this.messages.find(x => x.id_post == id_post).nblike ++;
+                }
+
         })
          },
 

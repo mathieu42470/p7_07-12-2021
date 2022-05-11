@@ -1,19 +1,25 @@
 <template>  
-  <div>             
+  <div>    
+             <!-- formulaire pour la création de commentaire  -->
        <div class="createcomment">
                       <h1>nouveau commentaire</h1>
                       <form method="post" class="formcom" name="create">
-               <div>
+               <div class="commentext">
                 <label for="text">texte: </label>         
                 <textarea class="texte"  name="text" placeholder="mon post"  v-model="comment.text"/>
-                <input v-on:click="onsubmit" class="button" type="button" value='envoyer'/>
-               </div>
+                </div>
+                <input v-on:click="onsubmit" class="buton" type="button" value='envoyer'/>
+               
                       </form>
        </div> 
+       <!-- formulaire pour la mise en page des commentaires -->
        <h2> Commentaires postés</h2>
           <article v-for="(item) in messages" :key="item.id_comment" class="comment">
            <div>
-             <p class="nomprenom">{{item.firstname}}, {{item.lastname}}</p>
+             <div class="nomprenom">
+               <p>{{item.lastname}}</p>
+               <p> {{item.firstname}}</p>
+             </div>
              <p>{{item.text}}</p>
            </div>
           </article> 
@@ -36,7 +42,7 @@ data(){
                       messages:null        
                }
 },
-
+  // récupération des commentaires //
  created(){
     fetch('http://localhost:3000/api/commentaire/'+this.$route.query.idpost, {
       method : 'GET',
@@ -48,6 +54,7 @@ data(){
     })
   },
   methods:{
+    // envoie du formulaire d'un nouveau commentaire // 
      onsubmit(e){
                 e.preventDefault();
                 let comment =  new FormData();
@@ -83,6 +90,7 @@ data(){
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  border-bottom: dotted;
 }
 .createcomment{
   display: flex;
@@ -90,12 +98,16 @@ data(){
   border: solid black;
   border-radius: 20px;
 }
-.texte{
-  width: 90%;
-}
-.button{
+.commentext{
   display: flex;
-  text-align: center;
-  margin: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.texte{
+  width: 40%;
+}
+.buton{
+  margin: 2%;
 }
   </style>

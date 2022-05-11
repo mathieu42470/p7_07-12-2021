@@ -22,7 +22,8 @@ exports.createPost = (req, res, next) =>{
 
 // récupération des messages pour la page d'accueil //
 exports.getAllPost = (req, res, next) =>{
-  db.query(`SELECT * FROM groupomania.post INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.post.id_user`, (err, result, fields) =>{
+  console.log(req.body.userId)
+  db.query(`SELECT *  FROM groupomania.post INNER JOIN groupomania.user ON groupomania.user.id_user = groupomania.post.id_user`, (err, result, fields) =>{
 if(err){
       return res.status(400).json({message: err.message})
     }
@@ -85,7 +86,8 @@ exports.deletePost = (req, res, next) => {
 
 // like du message //
 exports.likePost = (req, res, next) =>{
-    switch(req.body.nblikes){      
+  console.log(req.body)
+    switch(req.body.etat){      
       // message non like
       case 0:  
       console.log('la');   
@@ -114,14 +116,14 @@ exports.likePost = (req, res, next) =>{
                
         break;
          // message liké //
-          case 1:  
+        case 1:  
           console.log('ici', req.body.id_user);
           db.query(`SELECT * FROM groupomania.like WHERE id_user = ? AND id_post= ?`,[req.body.id_user, req.body.id_post ], (err, result) =>{
             if(err){
               return res.status(400).json({message : err.message})
             }
             if(result.length > 0){      
-              return res.status(200).json({message : "Tu aimes déjà"})
+              return res.status(200).json({message : "Tu aimes déjà",code: 0})
             }else{
               db.query(`INSERT INTO groupomania.like SET ?`,{id_user : req.body.id_user, id_post : req.body.id_post}, (err, result) =>{
                   if(err){
@@ -131,7 +133,7 @@ exports.likePost = (req, res, next) =>{
                     if(err){
                       return res.status(400).json({message : err.message})
                     }else{
-                      return res.status(200).json({message : "Vous aimez le post"})
+                      return res.status(200).json({message : "Vous aimez le post",code: 1})
                     }                   
                   });
                 }
@@ -141,3 +143,26 @@ exports.likePost = (req, res, next) =>{
               break;
       };
     }
+
+// récupération d'un message en particulier //
+exports.getLikeByIdUser = (req, res, next) =>{ 
+  console.log("je suis passé là")
+
+  if(req.params.id_user){             
+db.query(`SELECT * FROM groupomania.like WHERE groupomania.like.id_user = ?;`, req.params.id_user,(err, result) =>{
+   if(err){
+    return res.status(500).json({message : err.message})
+   } else{ 
+        
+   
+    if(err){
+      return res.status(500).json({message : err.message})
+     }else{    
+       return res.status(200).json({message : result})
+      }
+ }
+})
+}else{
+return res.status(500).json({message : "pas d'id"})
+}
+};
