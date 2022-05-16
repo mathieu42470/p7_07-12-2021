@@ -1,5 +1,6 @@
 <template>
 <div class="pages">
+      <!-- tous les messages postés par les utilisateurs -->
       <h1> messages postés</h1>    
        <article v-for="(item) in messages" :key="item.id_post" class="articles"> 
              <a class="ids" @click.prevent="id($event, item.id_post)"> 
@@ -8,12 +9,13 @@
                       <p>{{item.firstname}}</p>
                    </div>
                    <div class="texts">
-                      <p>{{item.text}} </p>
+                      <p class="texte">{{item.text}} </p>
                       <img :src="item.url_image" class="images">
                    </div>
                    </a>  
                    <div class="likes">
-                   <button @click.prevent="likePost($event, item.id_post)" value="envoyer" >{{item.password}}</button>
+                   <button class="bouttonjaime1" v-if="item.password == 1" @click.prevent="likePost($event, item.id_post,0)" value="envoyer" >j'aime</button>
+                   <button class="bouttonjaime" v-else @click.prevent="likePost($event, item.id_post,1)" value="envoyer">j'aime</button>
                    <p>{{item.nblike}}</p> 
                    </div>
                    <div>
@@ -42,6 +44,7 @@ export default {
               user:0
   }
   },
+// récupération de tous les messages a la connexion //
   created()  {             
       fetch('http://localhost:3000/api/post/',{
                method : 'GET',
@@ -58,10 +61,7 @@ export default {
       .then(res => res.json())
             .then(resJson => {
                   console.log(resJson)
-
-            resJson.message.map((like)=>{
-                  console.log(this.messages.indexOf(this.messages.find(x => x.id_post == like.id_post)))
-                  console.log(this.messages[this.messages.indexOf(this.messages.find(x => x.id_post == like.id_post))])
+            resJson.message.map((like)=>{                 
                   this.messages[this.messages.indexOf(this.messages.find(x => x.id_post == like.id_post))].password = 1
             })
 
@@ -72,16 +72,16 @@ export default {
      
          },
  methods :{
-    likePost(e, id_post){
+      // envoie du like par une personne //
+    likePost(e, id_post,aime){
         e.preventDefault();
         
        let like = {
          id_post: id_post,
          id_user: this.id_user,
-         etat : 1,
+         etat : aime,
         nblike: this.messages.find(x => x.id_post == id_post).nblike
      }
-     console.log(like)
         fetch('http://localhost:3000/api/post/like', {
               method : 'POST',
               headers : {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
@@ -89,12 +89,16 @@ export default {
         }).then((data) => data.json()).then((result) =>{
                 if(result.code == 1){
                        this.messages.find(x => x.id_post == id_post).nblike ++;
+                       this.messages.find(x => x.id_post == id_post).password = 1;
+                        //this.$router.go()
+                }else{
+                       this.messages.find(x => x.id_post == id_post).nblike --;
+                       this.messages.find(x => x.id_post == id_post).password = 0;
                 }
 
         })
          },
-
-
+         // récupération de l'id d'un post pour l'envoie vers le post // 
          id(e, id_post){
                e.preventDefault();
                this.messages.find(x => x.id_post == id_post)
@@ -102,9 +106,9 @@ export default {
               this.$router.push('/onePost?idpost='+id_post)
 
          },
+         // suppression d'un post par l'administrateur //
          suppression(e, id_post){
                e.preventDefault();
-               console.log(id_post)
                 this.messages.find(x => x.id_post == id_post)
                fetch('http://localhost:3000/api/post/'+id_post, {
                     method: 'DELETE',
@@ -126,14 +130,13 @@ export default {
 }
 .articles{
       width: 90%;
-      height: 25rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       border: solid black;
       margin: 5%;
-      background-color: rgb(195, 187, 187);
+      background-color: coral;
       border-radius: 20px 20px 20px 20px;
 }
 .noms{
@@ -141,15 +144,17 @@ export default {
       display: flex;
       flex-direction: row;
       justify-content: space-around;
-      border-bottom: solid ;
+      border-bottom: dotted ;
       margin: 3%;
 }
 .texts{
       display: flex;
-      width: 100;
+      width: 100%;
+      align-items: center;
       flex-direction: row;
       justify-content: space-around;
       margin: 3%;
+      border-bottom: dotted ;
       
 }
 .images{
@@ -170,5 +175,21 @@ export default {
 }
 .else{
       height: 0%;
+}
+.bouttonjaime1{
+      background-color: aquamarine;
+      border-radius: 20px;
+      border-color: black solid 2px;
+      height: 35px;
+      width: 56px;
+}
+.bouttonjaime{
+      background-color: rgb(243, 71, 9);
+      border-radius: 20px;
+      height: 35px;
+      width: 56px;
+}
+.texte{
+      width:50%
 }
 </style>

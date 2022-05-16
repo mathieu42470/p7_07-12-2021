@@ -33,6 +33,7 @@ footer{
   margin-left: 8%;
   display: flex;
   align-self: center;
+  width: 30%;
 }
 .footersite {
    display: flex;
@@ -40,9 +41,15 @@ footer{
    align-items: center;
    justify-content: space-around;
    margin-right: 8%;
+   width: 30%;
 }
 a{
   list-style: none;
   color: white; 
+}
+@media (min-width: 100px) and (max-width: 600px){
+  .imgroupomania{
+    margin-left: 2%;
+  }
 }
 </style>

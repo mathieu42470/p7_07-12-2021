@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-//const user = require('../models/user');
 
 const db = require('../MysqlParam')
 
@@ -59,24 +58,13 @@ exports.login = (req, res, next) =>{
    })   
    }      
   
-   // connexion au profil d'un autre utilisateur //
-   exports.connect = (req,res,next)=>{
-     if(req.params.id){
-     db.query(`SELECT firstname, lastname  FROM groupomania.user where id_user= ? ;`, req.params.id, (err, result)=>{
-      if(err){
-        return res.status(500).json({message : err.message})
-      } else{
-        var row ='';
-        Object.keys(result).forEach(function(key) {
-           row = result[key];       
-        });
-       if(err){
-        return res.status(500).json({message : err.message})
-       }
-       return res.status(200).json({message : result})
-     }
-     })
-    }else{
-      return res.status(500).json({message : "pas d'id"})
+   // suppression d'un profil par l'utilisateur //
+   exports.deleteUser = (req, res, next) => {
+    console.log(req.params.id);
+   db.query(`DELETE FROM user WHERE id_user =?;` ,req.params.id,(err, result)=>{
+    if(err){
+      return res.status(400).json({message : err.message})
     }
-   }
+    return res.status(200).json({message : "utilisateur supprimé"})
+   })
+  };

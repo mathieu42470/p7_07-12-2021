@@ -5,7 +5,7 @@ const postCtrl = require('../controllers/post');
 const Auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
-// routes pour les messages envoyer par les utilisateurs //
+// routes pour les posts envoyer par les utilisateurs //
 
 router.post('/', Auth, multer, postCtrl.createPost );
 router.get('/',Auth, multer, postCtrl.getAllPost);

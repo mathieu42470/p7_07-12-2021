@@ -60,7 +60,7 @@ export default {
 </script>
 <style >
 .corps{
-  height: 20rem;
+  height: 25rem;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -82,5 +82,14 @@ export default {
   display: flex;
   align-items: center ;
   margin-bottom: 10%;
+}
+@media (min-width: 100px) and (max-width: 600px){
+  .corps{
+    height: 25rem;
+  }
+  .form{
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

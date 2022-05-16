@@ -11,8 +11,7 @@
            <img class="image" :src="message.url_image">
             </div> 
            <div class="like">
-           <button @click.prevent="likPost($event, message.id_post)" value="envoyer" >j'aime</button> 
-             <p>{{message.nblike}}</p>
+                 <p>{{message.nblike}}</p>
            </div>                  
         </article>
         <div >
@@ -62,23 +61,7 @@ export default {
     })    
   },
   methods : {
-     likPost(e, id_post){
-        e.preventDefault();     
-        this.message.nblike ++;
-       let like = {
-         id_post: id_post,
-         id_user: this.id_user,
-         nblike: this.message.nblike
-     }
-        fetch('http://localhost:3000/api/post/like', {
-              method : 'POST',
-              headers : {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
-              body : JSON.stringify(like)
-        }).then((data) => data.json()).then((result) =>{
-                 console.log(result);  
-        })
-         },
-          previewFile(e){             
+            previewFile(e){             
           this.post.file = e.target.files[0];  
          },
          onsubmits(e){
@@ -126,13 +109,9 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin: 3%;
-  border-bottom: solid ;
-}
-.image{
-  height: 20%;
-   width: 10%;
-   object-fit: cover;
+  border-bottom: dotted ;
+  height: 100%;
+  align-items: center;
 }
 .modifier{
   height: 25%;

@@ -57,8 +57,7 @@ exports.getOneComment = (req, res, next) =>{
 };
 
 // modifier un commentaire //
-exports.modifyComment = (req, res, next)=>{
-  
+exports.modifyComment = (req, res, next)=>{  
   db.query(`UPDATE commentaire SET text= ? WHERE id_commentaire= ? AND id_user= ?`, [req.body.text,req.body.id_commentaire,req.body.id_user], (err, result, fields) =>{
         if(err){
           return res.status(400).json({message : err.message})
