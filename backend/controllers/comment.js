@@ -26,11 +26,10 @@ exports.getAllComment = (req, res, next)=>{
         }else{
          
         return res.status(200).json({message : result})
-         }
-         
+         }         
       })
      } else{
-       return res.status(400).json({message: "pas de id post"})
+       return res.status(400).json({message: "pas d'id post"})
      }
 };
 
@@ -54,24 +53,4 @@ exports.getOneComment = (req, res, next) =>{
 }else{
       return res.status(500).json({message : "pas d'id"})
     }
-};
-
-// modifier un commentaire //
-exports.modifyComment = (req, res, next)=>{  
-  db.query(`UPDATE commentaire SET text= ? WHERE id_commentaire= ? AND id_user= ?`, [req.body.text,req.body.id_commentaire,req.body.id_user], (err, result, fields) =>{
-        if(err){
-          return res.status(400).json({message : err.message})
-        }
-        return res.status(200).json({message : "commentaire modifié"})
-      })    
-};
-
- // suppression d'un commentaire //
- exports.deleteComment = (req, res, next) =>{
-  db.query(`DELETE FROM commentaire WHERE id_commentaire =?;` ,req.params.id_commentaire,(err, result)=>{
-    if(err){
-      return res.status(400).json({message : err.message})
-    }
-    return res.status(200).json({message :"commentaire supprimé"})
-  })
 };

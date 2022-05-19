@@ -59,8 +59,7 @@ exports.login = (req, res, next) =>{
    }      
   
    // suppression d'un profil par l'utilisateur //
-   exports.deleteUser = (req, res, next) => {
-    console.log(req.params.id);
+   exports.deleteUser = (req, res, next) => {  
    db.query(`DELETE FROM user WHERE id_user =?;` ,req.params.id,(err, result)=>{
     if(err){
       return res.status(400).json({message : err.message})

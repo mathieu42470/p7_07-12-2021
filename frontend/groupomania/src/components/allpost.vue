@@ -59,9 +59,8 @@ export default {
             "Authorization" : "Bearer "+sessionStorage.getItem("Token")},
       })         
       .then(res => res.json())
-            .then(resJson => {
-                  console.log(resJson)
-            resJson.message.map((like)=>{                 
+            .then(resJson => {            
+            resJson.message.map((like)=>{                                   
                   this.messages[this.messages.indexOf(this.messages.find(x => x.id_post == like.id_post))].password = 1
             })
 
@@ -90,7 +89,7 @@ export default {
                 if(result.code == 1){
                        this.messages.find(x => x.id_post == id_post).nblike ++;
                        this.messages.find(x => x.id_post == id_post).password = 1;
-                        //this.$router.go()
+                        //
                 }else{
                        this.messages.find(x => x.id_post == id_post).nblike --;
                        this.messages.find(x => x.id_post == id_post).password = 0;
@@ -114,6 +113,7 @@ export default {
                     method: 'DELETE',
                     headers: {"Content-Type":"application/json", "Authorization": "Bearer "+ sessionStorage.getItem("Token")},
                   }).then((data )=> data.json()).then((result)=>{
+                    this.$router.go()
                      console.log(result)
                })
          }

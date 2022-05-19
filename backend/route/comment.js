@@ -6,10 +6,8 @@ const Auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
 //routes pour les commentaires des utilisateurs //
-router.post('/',  multer, CommentCtrl.createComment);
-router.get('/:id', multer, CommentCtrl.getAllComment);
-router.get('/:id',  multer, CommentCtrl.getOneComment);
-router.put('/', multer, CommentCtrl.modifyComment);
-router.delete('/:id_commentaire',  multer, CommentCtrl.deleteComment);
+router.post('/', Auth,  multer, CommentCtrl.createComment);
+router.get('/:id', Auth, multer, CommentCtrl.getAllComment);
+router.get('/:id',Auth,  multer, CommentCtrl.getOneComment);
 
 module.exports = router

@@ -53,6 +53,7 @@ export default {
         body : JSON.stringify(this.user )
       }).then((data) => data.json()).then((result) =>{
         console.log( result)
+        this.$router.go();
       })    
      },
 }
