@@ -13,8 +13,7 @@
            </div> 
           <div class="form">
              <label for="email">Adresse e-mail : </label>
-             <input id="email" type="email" name="email"  v-model="user.email"/>
-           
+             <input id="email" type="email" name="email"  v-model="user.email"/>         
           </div>
           <div class="form">
             <label for="password">mot de passe : </label>
@@ -26,8 +25,7 @@
           </form>
     </div>
 </template>
-<script>
- 
+<script> 
 export default {
   name: 'Formulaire',
   props: {

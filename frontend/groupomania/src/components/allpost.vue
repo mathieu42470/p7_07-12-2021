@@ -3,29 +3,27 @@
       <!-- tous les messages postés par les utilisateurs -->
       <h1> messages postés</h1>    
        <article v-for="(item) in messages" :key="item.id_post" class="articles"> 
-             <a class="ids" @click.prevent="id($event, item.id_post)"> 
-                  <div class="noms">
-                     <p>{{item.lastname}} </p>
-                      <p>{{item.firstname}}</p>
-                   </div>
-                   <div class="texts">
-                      <p class="texte">{{item.text}} </p>
-                      <img :src="item.url_image" class="images">
-                   </div>
-                   </a>  
-                   <div class="likes">
-                   <button class="bouttonjaime1" v-if="item.password == 1" @click.prevent="likePost($event, item.id_post,0)" value="envoyer" >j'aime</button>
-                   <button class="bouttonjaime" v-else @click.prevent="likePost($event, item.id_post,1)" value="envoyer">j'aime</button>
-                   <p>{{item.nblike}}</p> 
-                   </div>
-                   <div>
-                   <div v-if="type_user > user" @click.prevent="suppression($event, item.id_post)" >                    
+          <a class="ids" @click.prevent="id($event, item.id_post)"> 
+             <div class="noms">
+               <p>{{item.lastname}} </p>
+               <p>{{item.firstname}}</p>
+             </div>
+             <div class="texts">
+              <p class="texte">{{item.text}} </p>
+              <img :src="item.url_image" class="images">
+             </div>
+         </a>  
+             <div class="likes">
+              <button class="bouttonjaime1" v-if="item.password == 1" @click.prevent="likePost($event, item.id_post,0)" value="envoyer" >j'aime</button>
+              <button class="bouttonjaime" v-else @click.prevent="likePost($event, item.id_post,1)" value="envoyer">j'aime</button>
+              <p>{{item.nblike}}</p> 
+             </div>
+             <div>
+             <div v-if="type_user > user" @click.prevent="suppression($event, item.id_post)" >                    
                    <button>suppression</button>
-                   </div>
-                         <p class="else" v-else><p/>
-                   </div>
-                   
-                                 
+             </div>
+              <p class="else" v-else><p/>
+             </div>                                
       </article>  
 </div>                     
 </template>
@@ -47,8 +45,8 @@ export default {
 // récupération de tous les messages a la connexion //
   created()  {             
       fetch('http://localhost:3000/api/post/',{
-               method : 'GET',
-               headers : {"Content-Type":"application/json", "Authorization" : "Bearer "+sessionStorage.getItem("Token")},
+             method : 'GET',
+             headers : {"Content-Type":"application/json", "Authorization" : "Bearer "+sessionStorage.getItem("Token")},
          })         
          .then(res => res.json())
                .then(resJson => {
@@ -62,19 +60,14 @@ export default {
             .then(resJson => {            
             resJson.message.map((like)=>{                                   
                   this.messages[this.messages.indexOf(this.messages.find(x => x.id_post == like.id_post))].password = 1
-            })
-
-            
-            })         
-
-              })
-     
+            })            
+            })     
+              })    
          },
  methods :{
       // envoie du like par une personne //
     likePost(e, id_post,aime){
-        e.preventDefault();
-        
+        e.preventDefault();        
        let like = {
          id_post: id_post,
          id_user: this.id_user,
@@ -89,12 +82,10 @@ export default {
                 if(result.code == 1){
                        this.messages.find(x => x.id_post == id_post).nblike ++;
                        this.messages.find(x => x.id_post == id_post).password = 1;
-                        //
                 }else{
                        this.messages.find(x => x.id_post == id_post).nblike --;
                        this.messages.find(x => x.id_post == id_post).password = 0;
                 }
-
         })
          },
          // récupération de l'id d'un post pour l'envoie vers le post // 

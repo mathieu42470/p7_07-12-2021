@@ -9,6 +9,7 @@
        </div>        
 </template>
 <script>
+// troisieme page //
 import Header from '../components/header.vue'
 import Footer from '../components/footer.vue'
 import OnePost from '../components/onepost.vue'

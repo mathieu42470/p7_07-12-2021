@@ -8,9 +8,8 @@
     <Footer/>
   </div>
 </template>
-
 <script>
-// @ is an alias to /src
+// premiere page  /
  import Header from '@/components/header.vue'
 import Footer from '../components/footer.vue'
 import Connexion from '../components/connexion.vue'
