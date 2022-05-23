@@ -13,7 +13,8 @@
            </div> 
           <div class="form">
              <label for="email">Adresse e-mail : </label>
-             <input id="email" type="email" name="email"  v-model="user.email"/>         
+             <input id="email" type="email" name="email" v-on:change="regenex"  v-model="user.email"/>
+             <span v-if="isValidEmail" class="email2">format de l'email incorrect</span>         
           </div>
           <div class="form">
             <label for="password">mot de passe : </label>
@@ -38,7 +39,8 @@ export default {
          email : '',
          firstname: '',
          lastname: '',
-      }
+      },
+      isValidEmail: false
           }                                 
   },
   methods: {
@@ -54,6 +56,15 @@ export default {
         this.$router.go();
       })    
      },
+     regenex(){
+       this.user.email 
+       if (/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.user.email))
+  {
+    this.isValidEmail = false
+  }else{
+    this.isValidEmail = true
+  }
+     }
 }
 }
 </script>
@@ -81,6 +92,9 @@ export default {
   display: flex;
   align-items: center ;
   margin-bottom: 10%;
+}         
+.email2{
+  color: red;
 }
 @media (min-width: 100px) and (max-width: 600px){
   .corps{
